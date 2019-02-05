@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta menuItem="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${page.title}"></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="static/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="static/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+
+    <link href="static/style.css" rel="stylesheet">
+    <link href="static/blog.css" rel="stylesheet">
+</head>
+
+<body class="grey lighten-3">
+
+<div class="header" data-toggle="modal" data-target="#centralModalSuccess">
+    <header>
+        <div th:replace="~{header::header(${page.menuItem})}"></div>
+    </header>
+</div>
+<main class=" max-lg-5 ">
+    <div class="container">
+        <div class="row wow fadeIn">
+            <div th:each="tag : ${tags}" class="col-xl-6 mt-4 category">
+                <div class="card category shadow card-image" style="background-image: url();">
+                    <div class="text-white category justify-content-center text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+                        <div>
+                            <h3 class="card-title pt-2"><strong th:text="${tag.title}"></strong></h3>
+                            <a class="btn btn-pink" href="" th:href="@{blog/posts(tag=${tag.id})}"><i
+                                    class="fa fa-clone left"></i>Читать все статьи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- when will be authorization -->
+<!--<div th:replace="~{header::modelSingIn}" th:if="${user.isActive()==false}"></div>-->
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="static/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="static/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="static/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="static/mdb.min.js"></script>
+
+</body>
+
+</html>

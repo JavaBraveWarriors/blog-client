@@ -1,0 +1,62 @@
+<div th:fragment="post(post)" class="card" xmlns:th="http://www.thymeleaf.org">
+    <!--Card image-->
+    <div class="view overlay">
+        <!--TODO: add image support-->
+        <img src="https://mdbootstrap.com/img/Photos/Fluent/img(9).jpg" class="card-img-top " alt="photo">
+        <a href="" th:href="'/posts/' + ${post.id}">
+            <div class="mask rgba-white-slight"></div>
+        </a>
+    </div>
+    <!--Card content-->
+    <div class="card-body ">
+
+        <a th:each="tag : ${post.tags}" class="h6" href="" th:href="@{posts(tag=${tag.id})}">
+            <strong class="badge ml-1 p-2 my-1" th:classappend="${T(com.blog.model.Color).getRandomCssClassColor()}"
+                    th:text="${tag.title}">
+            </strong>
+        </a>
+        <!--Title-->
+        <h4 class="card-title font-weight-bold mb-2" th:text="${post.title}"></h4>
+        <p class="card-subtitle">Автор:
+            <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
+               th:text="${post.authorName} + ' ' +${post.authorLastName}">
+            </a>
+        </p>
+        <p class="mt-1">
+            <strong th:with="df=#{date.format}"><i class="fa fa-clock-o"></i>
+                <span th:text="${#temporals.format(post.timeOfCreation, df)}"></span>
+            </strong>
+        </p>
+        <!--Text-->
+        <p th:text="${post.description}"></p>
+        <div class="text-center ">
+            <a href="" th:href="'/posts/' + ${post.id}" class="text-primary">
+                <button class="btn btn-info btn-read" th:text="#{postFragment.readFull}"></button>
+            </a>
+        </div>
+    </div>
+    <div class="card-footer bg-transparent d-flex justify-content-around">
+                    <span class="text-muted">
+                        <!-- TODO: add count Comments-->
+                        <i class="fa fa-comments-o fa-2x"></i>[[${post.commentsCount}]]
+                    </span>
+        <span class="text-muted">
+                    <!-- TODO: add count View-->
+                      <i class="fa fa-eye fa-2x"></i> </span>
+        <span class="text-muted">
+            <!-- TODO: add count Likes and checked user like post or not-->
+            <!--user liked-->
+            <a href="/posts/removeLike/">
+                <i class="fa fa-heart fa-2x red-text"></i>
+            </a>
+
+            <!--&lt;!&ndash;user not liked&ndash;&gt;-->
+            <!--<a href="blog/post/addLike/">-->
+            <!--<i class="fa fa-heart fa-2x"></i>-->
+            <!--</a>-->
+
+        </span>
+        </span>
+
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<form class="form-inline mr-auto" method="get" th:fragment="search" xmlns:th="http://www.thymeleaf.org">
+    <button class="btn btn-info btn-rounded btn-sm my-0 ml-sm-2" type="submit"
+            th:text="#{searchTemplate.buttonSearch}"></button>
+    <div class="md-form active-cyan-2 mb-3">
+        <input class="form-control" type="text" menuItem="searchLine" name="search"
+               th:placeholder="#{searchTemplate.placeholder}"
+               aria-label="Search">
+    </div>
+</form>
