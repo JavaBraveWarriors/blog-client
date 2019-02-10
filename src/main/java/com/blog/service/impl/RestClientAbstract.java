@@ -1,5 +1,7 @@
 package com.blog.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,8 @@ public class RestClientAbstract {
 
     protected String endpoint;
 
+    protected ObjectMapper jsonConverter;
+
     protected HttpHeaders headers;
 
     protected HttpEntity<String> entity;
@@ -26,5 +30,13 @@ public class RestClientAbstract {
 
     protected String createURLWithEndpoint(String URI) {
         return address + ":" + port + serverURI + URI;
+    }
+
+    protected String convertToJson(Object object) {
+        try {
+            return jsonConverter.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

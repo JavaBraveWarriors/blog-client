@@ -1,18 +1,35 @@
 package com.blog.config;
 
+import com.blog.model.TagConverterToString;
+import com.blog.model.TagConverterToTag;
+import com.blog.model.TagFormatter;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.Formatter;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.servlet.ServletContext;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Configuration
 @EnableWebMvc
@@ -21,20 +38,59 @@ import java.util.Locale;
 })
 @ComponentScan("com.blog")
 @Import(BeansConfiguration.class)
-public class MvcWebConfig implements WebMvcConfigurer {
+public class MvcWebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     @Autowired
-    private ApplicationContext applicationContext;
+    ServletContext servletContext;
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(getTagConverterToTag());
+        registry.addConverter(getTagConverterToString());
+        registry.addFormatter(new TagFormatter());
+    }
+
+    @Bean(name = "conversionService")
+    public ConversionService getConversionService() {
+        FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
+        Set<Formatter> fmts = new HashSet<>();
+        fmts.add(new TagFormatter());
+        Set<Converter> cmts = new HashSet<>();
+        cmts.add(new TagConverterToString());
+        cmts.add(new TagConverterToTag());
+        factoryBean.setConverters(cmts);
+        factoryBean.setFormatters(fmts);
+        factoryBean.afterPropertiesSet();
+        return factoryBean.getObject();
+    }
+
+    @Bean
+    public TagConverterToTag getTagConverterToTag() {
+        return new TagConverterToTag();
+    }
+
+    @Bean
+    public TagConverterToString getTagConverterToString() {
+        return new TagConverterToString();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     // Thymeleaf
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setTemplateMode("HTML5");
         templateResolver.setApplicationContext(applicationContext);
+        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCacheable(true);
         return templateResolver;
     }
 
@@ -47,12 +103,12 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return templateEngine;
     }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setTemplateEngine(templateEngine());
-        registry.viewResolver(resolver);
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
+        return viewResolver;
     }
 
     // Locale
@@ -100,5 +156,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
 
 
     }
+
 
 }

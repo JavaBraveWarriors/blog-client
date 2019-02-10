@@ -17,8 +17,7 @@
 </head>
 
 <body>
-<div th:replace="~{header::header}"></div>
-<h1 th:text="#{greeting}"></h1>
+<div th:replace="~{header::header(${page.get(activeTab)})}"></div>
 
 <!-- SCRIPTS -->
 <!-- JQuery -->

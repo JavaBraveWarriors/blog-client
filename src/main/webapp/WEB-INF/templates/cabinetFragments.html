@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--TODO: do a real functionality-->
+<div class="row " th:fragment="views()" xmlns:th="http://www.thymeleaf.org">
+    <!--Statistics-->
+    <div class="card mb-4 text-center urlTable col-xl-12 wow fadeIn">
+        <p class="h4 mt-3">Список посещенных страниц.</p>
+        <!--Card content-->
+        <table id="dtBasicExample" class="table mt-3 table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th class="th-sm">№
+                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">URL
+                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                </th>
+            </tr>
+            </thead>
+            <tbody>';
+            $i=0;
+            foreach ($pageData['visitorStatistics'] as $key => $value) {
+            echo '
+            <tr>
+                <td>'.$i.'</td>
+                <td>'.$value.'</td>
+            </tr>
+            ';
+            $i++;
+            }
+            echo '
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>№
+                </th>
+                <th>URL
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="row " th:fragment="statistics()" xmlns:th="http://www.thymeleaf.org">
+
+</div>

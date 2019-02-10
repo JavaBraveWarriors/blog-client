@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Pagination {
+    private static Long COUNT_PAGINATION_TABS = 7L;
     private Long currentPage;
     private Long totalPages;
     private Long size;
@@ -35,7 +36,7 @@ public class Pagination {
     }
 
     public List<Long> createPaginationArray() {
-        if (totalPages > 7) {
+        if (totalPages > COUNT_PAGINATION_TABS) {
             List<Long> head = (currentPage > 4) ?
                     Collections.unmodifiableList(Arrays.asList(1L, -1L)) :
                     Collections.unmodifiableList(Arrays.asList(1L, 2L, 3L));

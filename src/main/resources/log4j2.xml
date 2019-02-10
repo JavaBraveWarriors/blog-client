@@ -1,17 +1,17 @@
 <Configuration status="WARN">
     <Appenders>
-        <Console menuItem="Console" target="SYSTEM_OUT">
+        <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <File menuItem="File" fileName="logs/rest-client.log">
+        <File name="File" fileName="logs/rest-client.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
-        <Root menuItem="com.blog" level="DEBUG">
+        <Root name="com.blog" level="DEBUG">
             <appender-ref ref="File"/>
             <appender-ref ref="Console"/>
         </Root>
-        <Logger menuItem="com.blog" level="DEBUG"/>
+        <Logger name="com.blog" level="DEBUG"/>
     </Loggers>
 </Configuration>

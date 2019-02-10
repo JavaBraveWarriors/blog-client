@@ -2,7 +2,7 @@
 <nav th:fragment="header(activeTab)" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar "
      xmlns:th="http://www.thymeleaf.org">
 
-    <a class="navbar-brand" href="#"><strong> Бренд!</strong></a>
+    <a class="navbar-brand" href="#"><img width="80" src="https://mdbootstrap.com/img/logo/mdb-email.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" th:class="${activeTab == 'main'}? 'active' : null ">
-                <a class="nav-link text-uppercase" href="/">Main<span class="sr-only">(current)</span></a>
+                <a class="nav-link text-uppercase" href="/index">Main<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item" th:class="${activeTab == 'blog'}? 'active' : null ">
                 <a class="nav-link text-uppercase" href="/blog">Blog</a>
@@ -18,7 +18,7 @@
         </ul>
         <ul class="nav-bar nav-flex-icons">
             <li class="nav-item form-inline search">
-                <p th:if="${page.isSearch()}">
+                <p th:if="${page.get(search)=='true'}">
                 <div th:replace="~{searchTemplate :: search}"></div>
                 </p>
                 <!--add  th:if="$user.isActive() "-->
@@ -31,15 +31,15 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-secondary view overlay "
                          aria-labelledby="navbarDropdownMenuLink-5">
-                        <a class="dropdown-item waves-effect " href="user/cabinet/statistics"
+                        <a class="dropdown-item waves-effect " href="/user/cabinet/statistics"
                            th:text="#{header.cabinet}"></a>
                         <a class="dropdown-item waves-effect " href="/user/" th:href="@{user.id}"
                            th:text="#{header.account}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/modify"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/modify"
                            th:text="#{header.modify}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/settings"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/settings"
                            th:text="#{header.settings}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/logout"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/logout"
                            th:text="#{header.logout}"></a>
                     </div>
                 </div>

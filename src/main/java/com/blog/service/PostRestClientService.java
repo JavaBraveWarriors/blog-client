@@ -13,4 +13,6 @@ public interface PostRestClientService {
     List<Post> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search);
 
     Long getCountPages(Long size);
+
+    Long addPost(Post post);
 }

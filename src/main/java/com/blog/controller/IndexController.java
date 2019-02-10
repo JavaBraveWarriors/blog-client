@@ -5,15 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Map;
+
 @Controller
 public class IndexController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        Page page = new Page();
-        page.setMenuItem("main");
-        page.setSearch(true);
+        Map<String, String> page = Page.getPageDafaultParams();
+        page.put("activeTab", "main");
         model.addAttribute("page", page);
+
         return "index.html";
     }
 }

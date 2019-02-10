@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta menuItem="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{blogAddPost.title}"></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+    <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/newPost.css" rel="stylesheet">
+</head>
+<body class="grey lighten-3">
+<div class="header">
+    <header>
+        <div th:replace="~{header::header(${page.menuItem})}"></div>
+    </header>
+</div>
+<main class=" max-lg-5 ">
+    <div class="container mt-5">
+        <div class="row wow fadeIn">
+            <div class="col-xl-12 form-post ">
+                <div class="card">
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Новая статья</strong>
+                    </h5>
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
+                        <!-- Form -->
+                        <form class="text-center needs-validation" name="post" th:object="${post}"
+                              style="color: #757575; " method="post" novalidate>
+                            <div class="form-group row">
+                                <!-- title -->
+                                <div class="col-xl-6 md-form mt-4">
+                                    <input type="text" id="materialContactFormTitle" name="title" th:field="*{title}"
+                                           class="form-control"
+                                           required>
+                                    <label for="materialContactFormTitle">Заголовок статьи</label>
+                                    <div class="invalid-feedback ">
+                                        <small style="font-size:0.8rem"> Пожалуйста, введите Заголовок статьи.</small>
+                                    </div>
+                                </div>
+                                <!--Subject-->
+                                <div class="col-xl-6 md-form mt-4 ">
+                                    <select class="selectpicker"
+                                            multiple="multiple"
+                                            th:field="*{tags}"
+                                            title="Выберите категории статьи"
+                                            data-width="100%" required>
+                                        <option
+                                                th:each="tag : ${allTags}"
+                                                th:value="${tag.id}"
+                                                th:text="${tag.title}">
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <small style="font-size:0.8rem"> Пожалуйста, Выберите хотя бы одну категорию.
+                                        </small>
+                                    </div>
+                                </div>
+                                <!--TODO: refactored when will added security.-->
+                                <input type="hidden" th:attr="name='authorId'" th:value="1">
+                                <!--Message-->
+                                <div class="col-xl-12 md-form mt-4">
+                    <textarea type="text" id="materialContactFormMessage" name='description' th:field="*{description}"
+                              class="form-control md-textarea"
+                              rows="3" required></textarea>
+                                    <label for="materialContactFormMessage">Короткое описание статьи</label>
+                                    <div class="invalid-feedback">
+                                        <small style="font-size:0.8rem"> Пожалуйста, напишите короткое описание
+                                            статьи.
+                                        </small>
+
+                                    </div>
+                                </div>
+                                <!--TODO: add feature -->
+                                <!--&lt;!&ndash; видео url &ndash;&gt;
+                                <div class="col-xl-11 mt-4" id="url1">
+                                    <label class="mb-0 ml-2 h5" for="material-url">Url видео на youtube.com</label>
+                                    <div class="md-form input-group mt-0 mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text md-addon" id="material-addon3">https://www.youtube.com/</span>
+                                        </div>
+                                        <input type="text" class="form-control" name='urlVideo[]' id="material-url"
+                                               aria-describedby="material-addon3">
+                                    </div>
+                                </div>
+                                <div class="col-xl-1  " id="addUrldiv">
+                                    <button class="btn btn-info btn-add btn-block my-4 waves-effect btn-sm"
+                                            type="button" id="addUrl"><i
+                                            class="fa fa-plus fa-2x"></i></button>
+                                </div>-->
+
+                                <div class="shadow-textarea col-xl-12 form-group  mt-4">
+                                    <label class="h5" for="FormControlTextarea">Текст статьи</label>
+                                    <textarea class="form-control z-depth-1"
+                                              name='text'
+                                              th:field="*{text}"
+                                              id="FormControlTextarea"
+                                              rows="10" placeholder="Тут пишите статью...."
+                                              required></textarea>
+                                    <div class="invalid-feedback">
+                                        <small style="font-size:0.8rem"> Пожалуйста, напишите статью.</small>
+
+                                    </div>
+                                </div>
+                                <!-- сделать работу с изображениями -->
+                                <!-- <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                  </div>
+                                  <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                  </div>
+                                </div>  -->
+                                <!-- Send button -->
+                                <button class="btn btn-outline-info btn-rounded col-xl-12 btn-block z-depth-0 my-4 waves-effect"
+                                        type="submit">Send
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="/static/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="/static/mdb.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    addUrl.onclick = function () {
+        var first = document.getElementById("addUrldiv");
+        var htmlCode =
+            "<div class='col-xl-11 mt-2' id='url1'><div class='md-form input-group mt-0 mb-3'><div class='input-group-prepend'><span class='input-group-text md-addon' id='material-addon3'>https://www.youtube.com/</span></div><input type='text' name='urlVideo[]' class='form-control' id='material-url' aria-describedby='material-addon3'></div></div>";
+        first.insertAdjacentHTML('afterEnd', htmlCode);
+    }
+    $(document).ready(function () {
+        $('select').selectpicker();
+    });
+</script>
+
+
+</body>
+
+</html>

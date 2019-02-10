@@ -2,6 +2,7 @@ package com.blog.service.impl;
 
 import com.blog.Post;
 import com.blog.service.PostRestClientService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -18,9 +19,10 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
 
 
     @Autowired
-    public PostRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers) {
+    public PostRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
         this.restTemplate = restTemplate;
         this.headers = headers;
+        this.jsonConverter = jsonConverter;
         endpoint = "posts";
     }
 
@@ -75,5 +77,18 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
                 }
         );
         return count.getBody();
+    }
+
+    @Override
+    public Long addPost(Post post) {
+        entity = new HttpEntity<>(convertToJson(post), headers);
+        ResponseEntity<Long> postId = restTemplate.exchange(
+                createURLWithEndpoint(endpoint),
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<Long>() {
+                }
+        );
+        return postId.getBody();
     }
 }
