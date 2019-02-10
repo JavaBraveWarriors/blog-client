@@ -1,6 +1,5 @@
 package com.blog.model;
 
-import com.blog.Tag;
 import org.springframework.format.Formatter;
 
 import java.text.ParseException;

@@ -55,13 +55,13 @@ public class MvcWebConfig implements WebMvcConfigurer, ApplicationContextAware {
     @Bean(name = "conversionService")
     public ConversionService getConversionService() {
         FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
-        Set<Formatter> fmts = new HashSet<>();
-        fmts.add(new TagFormatter());
-        Set<Converter> cmts = new HashSet<>();
-        cmts.add(new TagConverterToString());
-        cmts.add(new TagConverterToTag());
-        factoryBean.setConverters(cmts);
-        factoryBean.setFormatters(fmts);
+        Set<Formatter> formatters = new HashSet<>();
+        formatters.add(new TagFormatter());
+        Set<Converter> converters = new HashSet<>();
+        converters.add(new TagConverterToString());
+        converters.add(new TagConverterToTag());
+        factoryBean.setConverters(converters);
+        factoryBean.setFormatters(formatters);
         factoryBean.afterPropertiesSet();
         return factoryBean.getObject();
     }
@@ -127,13 +127,6 @@ public class MvcWebConfig implements WebMvcConfigurer, ApplicationContextAware {
         return slr;
     }
 
-    /*@Bean(name = "localeResolver")
-    public CookieLocaleResolver getCookieLocaleResolver(){
-        CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-        cookieLocaleResolver.setDefaultLocale(new Locale("ru"));
-        return cookieLocaleResolver;
-    }*/
-
     @Bean(name = "localeChangeInterceptor")
     public LocaleChangeInterceptor getLocaleChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
@@ -154,8 +147,5 @@ public class MvcWebConfig implements WebMvcConfigurer, ApplicationContextAware {
         registry.addResourceHandler("/font/**")
                 .addResourceLocations("/WEB-INF/static/font/roboto").setCachePeriod(31556926);
 
-
     }
-
-
 }

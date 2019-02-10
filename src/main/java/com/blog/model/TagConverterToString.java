@@ -1,6 +1,5 @@
 package com.blog.model;
 
-import com.blog.Tag;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

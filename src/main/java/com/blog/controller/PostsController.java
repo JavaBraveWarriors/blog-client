@@ -1,9 +1,9 @@
 package com.blog.controller;
 
-import com.blog.Post;
-import com.blog.Tag;
 import com.blog.model.Page;
 import com.blog.model.Pagination;
+import com.blog.model.Post;
+import com.blog.model.Tag;
 import com.blog.service.PostRestClientService;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ public class PostsController {
 
     private PostRestClientService postService;
     private TagRestClientService tagService;
-
 
     @Autowired
     public PostsController(PostRestClientService postService, TagRestClientService tagService) {
@@ -91,6 +90,4 @@ public class PostsController {
         Long postId = postService.addPost(post);
         return "redirect:/blog/posts/" + postId;
     }
-
-
 }

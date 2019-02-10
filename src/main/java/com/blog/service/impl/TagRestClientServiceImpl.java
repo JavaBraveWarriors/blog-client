@@ -1,6 +1,6 @@
 package com.blog.service.impl;
 
-import com.blog.Tag;
+import com.blog.model.Tag;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

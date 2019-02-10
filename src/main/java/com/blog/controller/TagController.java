@@ -1,6 +1,6 @@
 package com.blog.controller;
 
-import com.blog.Tag;
+import com.blog.model.Tag;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

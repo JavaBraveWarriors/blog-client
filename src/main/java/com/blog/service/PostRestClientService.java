@@ -1,6 +1,6 @@
 package com.blog.service;
 
-import com.blog.Post;
+import com.blog.model.Post;
 
 import java.util.List;
 

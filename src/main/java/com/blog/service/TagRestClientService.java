@@ -1,6 +1,6 @@
 package com.blog.service;
 
-import com.blog.Tag;
+import com.blog.model.Tag;
 
 import java.util.List;
 

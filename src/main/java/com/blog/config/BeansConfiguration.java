@@ -53,5 +53,4 @@ public class BeansConfiguration {
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return headers;
     }
-
 }

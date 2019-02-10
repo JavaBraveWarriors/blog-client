@@ -1,6 +1,6 @@
 package com.blog.service.impl;
 
-import com.blog.Post;
+import com.blog.model.Post;
 import com.blog.service.PostRestClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import java.util.List;
 
 @Service
 public class PostRestClientServiceImpl extends RestClientAbstract implements PostRestClientService {
-
 
     @Autowired
     public PostRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
