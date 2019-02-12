@@ -1,10 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${post}"></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/post.css" rel="stylesheet">
+</head>
+
+<body class="grey  lighten-3">
+
+<div class="header" data-toggle="modal" data-target="#centralModalSuccess">
+    <header>
+        <div th:replace="~{header::header(${page.menuItem})}"></div>
+    </header>
+</div>
+<main class=" max-lg-5 ">
+    <div class="container">
+        <div class="row wow fadeIn">
+            <div class="row">
+                <!-- Post Content Column -->
+                <div class="col-lg-8">
+                    <div class="card title-picture text-center mb-4 wow fadeIn img-fluid">
+
+                        <h1 class="mb-4 white-text mt-5">
+                            <strong th:text="${post.title}"></strong>
+                        </h1>
+                        <!- todo придумать переход к аккаунту -->
+                        <a target="_blank" th:href="'/users/' + ${post.authorId}"
+                           class="btn btn-outline-white btn-lg mt-5 waves-effect waves-light">
+                            Все статьи автора <!-- <i class="fa fa-graduation-cap ml-2"></i> -->
+                        </a>
+                    </div>
+                    <!-- Content -->
+                    <div class=" card card-post pl-3 mb-4 pr-3">
+                        <!-- Author -->
+                        <div class="text">
+                            <p class="lead mt-5">
+                                <div th:replace="~{postFragment::postAuthor(${post})}"></div>
+                            </p>
+                            <hr>
+                            <!-- Date/Time -->
+                            <div th:replace="~{postFragment::postDate(${post.timeOfCreation})}"></div>
+                            <hr>
+                            <!-- Post Content -->
+                            <div class="lead" th:text="${post.text}"></div>
+                        </div>
+
+                        <hr>
+                        <div class="tags">
+                            <h5>Теги:</h5>
+                            <div th:replace="~{postFragment::postTags(${post.tags})}"></div>
+                        </div>
+
+                        <div class="card-footer bg-transparent d-flex justify-content-around">
+                            <div th:replace="~{postFragment::postCommentsCount(${post.commentsCount})}"></div>
+                            <div th:replace="~{postFragment::postViewsCount(${post.viewsCount})}"></div>
+                            <div th:replace="~{postFragment::postLikesCount(${post.likesCount})}"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 wow fadeIn">
+
+                        <div class="card-header font-weight-bold">
+                            <span>О авторе</span>
+                            <span class="pull-right">
+                                    <a href="">
+                                        <i class="fa fa-facebook mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-twitter mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-instagram mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-linkedin mr-2"></i>
+                                    </a>
+                                </span>
+                        </div>
+
+                        <!--Card content-->
+                        <div class="card-body">
+                            <div class="media d-block d-md-flex mt-3">
+                                <img class="d-flex mb-3 mx-auto z-depth-1"
+                                     src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
+                                     alt="Generic placeholder image"
+                                     style="width: 100px;">
+                                <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                    <h5 class="mt-0 font-weight-bold">
+                                        <div th:replace="~{postFragment::postAuthor(${post})}"></div>
+                                    </h5>
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+                                    praesentium voluptatum deleniti atque corrupti
+                                    quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+                                    similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                    dolorum
+                                    fuga.
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sidebar Widgets Column -->
+                <div class="col-md-4">
+
+                    <!-- Search Widget -->
+                    <div class="card mb-4">
+                        <h5 class="card-header">Search</h5>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">Go!</button>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Card-->
+                    <div class="card mb-4 wow fadeIn">
+
+                        <div class="card-header">Related articles</div>
+
+                        <!--Card content-->
+                        <div class="card-body">
+
+                            <ul class="list-unstyled">
+                                <li class="media">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder7.jpg"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                                <li class="media my-4">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder6.jpg"
+                                         alt="An image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                                <li class="media">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder5.jpg"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <!--/.Card-->
+                    <!-- Categories Widget -->
+                    <div class="card my-4">
+                        <h5 class="card-header">Categories</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <a href="#">Web Design</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">HTML</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Freebies</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <a href="#">JavaScript</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">CSS</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Tutorials</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Widget -->
+                    <div class="card my-4">
+                        <h5 class="card-header">Side Widget</h5>
+                        <div class="card-body">
+                            сделать тут аккаунт того кто написал статью с ссылой на аккаунт
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+
+        </div>
+    </div>
+</main>
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="/static/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="/static/mdb.min.js"></script>
+
+
+<!-- <script src="https://vincentgarreau.com/particles.js/particles.js"></script>
+<script src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'></script>
+  <script type="text/javascript" src="js/index.js"></script> -->
 </body>
+
 </html>

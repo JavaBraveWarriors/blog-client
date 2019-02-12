@@ -9,7 +9,6 @@ public class Page {
         Map<String, String> page = new HashMap<>();
         page.put("search", "true");
         page.put("menuItem", "blog");
-        page.put("activeTab", "main");
         return page;
     }
 }

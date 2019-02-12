@@ -9,25 +9,20 @@
     </div>
     <!--Card content-->
     <div class="card-body ">
+        <!--Tags-->
+        <div th:replace="~{postFragment::postTags(${post.tags})}"></div>
 
-        <a th:each="tag : ${post.tags}" class="h6" href="" th:href="@{posts(tag=${tag.id})}">
-            <strong class="badge ml-1 p-2 my-1" th:classappend="${T(com.blog.model.Color).getRandomCssClassColor()}"
-                    th:text="${tag.title}">
-            </strong>
-        </a>
         <!--Title-->
         <h4 class="card-title font-weight-bold mb-2" th:text="${post.title}"></h4>
-        <p class="card-subtitle">Автор:
-            <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
-               th:text="${post.authorName} + ' ' +${post.authorLastName}">
-            </a>
-        </p>
-        <p class="mt-1">
-            <strong th:with="df=#{date.format}"><i class="fa fa-clock-o"></i>
-                <span th:text="${#temporals.format(post.timeOfCreation, df)}"></span>
-            </strong>
-        </p>
-        <!--Text-->
+
+        <!--Author-->
+        <div th:replace="~{postFragment::postAuthor(${post})}"></div>
+
+        <!--Date of publication-->
+        <div th:replace="~{postFragment::postDate(${post.timeOfCreation})}"></div>
+
+        <!--Description-->
+        <!--TODO: refactored that description will be in front of card-->
         <p th:text="${post.description}"></p>
         <div class="text-center ">
             <a href="" th:href="'/blog/posts/' + ${post.id}" class="text-primary">
@@ -36,31 +31,48 @@
         </div>
     </div>
     <div class="card-footer bg-transparent d-flex justify-content-around">
-                    <span class="text-muted">
-                        <!-- TODO: add count Comments-->
-                        <i class="fa fa-comments-o fa-2x"></i>[[${post.commentsCount}]]
-                    </span>
-        <span class="text-muted">
-                    <!-- TODO: add count View-->
-                      <i class="fa fa-eye fa-2x"></i> </span>
-        <span class="text-muted">
+        <div th:replace="~{postFragment::postCommentsCount(${post.commentsCount})}"></div>
+        <div th:replace="~{postFragment::postViewsCount(${post.viewsCount})}"></div>
+        <div th:replace="~{postFragment::postLikesCount(${post.likesCount})}"></div>
+    </div>
+</div>
+
+<span th:fragment="postLikesCount(likesCount)" class="text-muted" xmlns:th="http://www.thymeleaf.org">
             <!-- TODO: add count Likes and checked user like post or not-->
             <!--user liked-->
             <a href="/posts/removeLike/">
                 <i class="fa fa-heart fa-2x red-text"></i>
+                <!--[[${likesCount}]]-->
             </a>
 
-            <!--&lt;!&ndash;user not liked&ndash;&gt;-->
-            <!--<a href="blog/post/addLike/">-->
-            <!--<i class="fa fa-heart fa-2x"></i>-->
-            <!--</a>-->
-
+    <!--&lt;!&ndash;user not liked&ndash;&gt;-->
+    <!--<a href="blog/post/addLike/">-->
+    <!--<i class="fa fa-heart fa-2x"></i>-->
+    <!--</a>-->
         </span>
-        </span>
-
-    </div>
-</div>
-
+<span th:fragment="postViewsCount(viewsCount)" class="text-muted" xmlns:th="http://www.thymeleaf.org">
+     <i class="fa fa-eye fa-2x"></i>
+    <!--[[${viewsCount}]]-->
+</span>
+<span th:fragment="postCommentsCount(commentsCount)" class="text-muted" xmlns:th="http://www.thymeleaf.org">
+    <i class="fa fa-comments-o fa-2x"></i>[[${commentsCount}]]
+</span>
+<a th:fragment="postTags(tags)" th:each="tag : ${tags}" class="h6" href="" th:href="@{posts(tag=${tag.id})}"
+   xmlns:th="http://www.thymeleaf.org">
+    <strong class="badge ml-1 p-2 my-1" th:classappend="${T(com.blog.model.Color).getRandomCssClassColor()}"
+            th:text="${tag.title}">
+    </strong>
+</a>
+<p th:fragment="postAuthor(post)" class="card-subtitle" xmlns:th="http://www.thymeleaf.org">Автор:
+    <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
+       th:text="${post.authorName} + ' ' +${post.authorLastName}">
+    </a>
+</p>
+<p th:fragment="postDate(date)" class="mt-1" xmlns:th="http://www.thymeleaf.org">
+    <strong th:with="df=#{date.format}"><i class="fa fa-clock-o"></i>
+        <span th:text="${#temporals.format(date, df)}"></span>
+    </strong>
+</p>
 <div class="container" th:fragment="postsLayout(posts, pagination, page)" xmlns:th="http://www.thymeleaf.org">
     <div class="row wow fadeIn">
         <section class="wow fadeIn" style="visibility: visible; name: fadeIn;">

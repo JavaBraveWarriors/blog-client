@@ -1,6 +1,8 @@
 package com.blog.service.impl;
 
 import com.blog.model.Post;
+import com.blog.model.PostForAdd;
+import com.blog.model.PostForGet;
 import com.blog.service.PostRestClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +28,23 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
     }
 
     @Override
-    public List<Post> getListShortPosts(Long page, Long size) {
+    public List<PostForGet> getListShortPosts(Long page, Long size) {
         entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<List<Post>> posts = restTemplate.exchange(
+        ResponseEntity<List<PostForGet>> posts = restTemplate.exchange(
                 createURLWithEndpoint(endpoint.concat("?page=").concat(page.toString()).concat("&size=").concat(size.toString())),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<List<Post>>() {
+                new ParameterizedTypeReference<List<PostForGet>>() {
                 }
         );
         return posts.getBody();
     }
 
     @Override
-    public List<Post> getListShortPostsWithSort(Long page, Long size, String sort) {
+    public List<PostForGet> getListShortPostsWithSort(Long page, Long size, String sort) {
         entity = new HttpEntity<>(null, headers);
-        ResponseEntity<List<Post>> posts = restTemplate.exchange(
+        ResponseEntity<List<PostForGet>> posts = restTemplate.exchange(
                 createURLWithEndpoint(
                         endpoint
                                 .concat("?page=")
@@ -53,14 +55,14 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
                                 .concat(sort)),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<List<Post>>() {
+                new ParameterizedTypeReference<List<PostForGet>>() {
                 }
         );
         return posts.getBody();
     }
 
     @Override
-    public List<Post> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search) {
+    public List<PostForGet> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search) {
         // TODO:
         return getListShortPostsWithSort(page, size, sort);
     }
@@ -79,7 +81,7 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
     }
 
     @Override
-    public Long addPost(Post post) {
+    public Long addPost(PostForAdd post) {
         entity = new HttpEntity<>(convertToJson(post), headers);
         ResponseEntity<Long> postId = restTemplate.exchange(
                 createURLWithEndpoint(endpoint),
@@ -89,5 +91,18 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
                 }
         );
         return postId.getBody();
+    }
+
+    @Override
+    public PostForGet getPostById(Long id) {
+        entity = new HttpEntity<>(null, headers);
+        ResponseEntity<PostForGet> post = restTemplate.exchange(
+                createURLWithEndpoint(endpoint.concat("/").concat(id.toString())),
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<PostForGet>() {
+                }
+        );
+        return post.getBody();
     }
 }

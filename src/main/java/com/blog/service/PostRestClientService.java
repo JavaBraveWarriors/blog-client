@@ -1,18 +1,21 @@
 package com.blog.service;
 
-import com.blog.model.Post;
+import com.blog.model.PostForAdd;
+import com.blog.model.PostForGet;
 
 import java.util.List;
 
 public interface PostRestClientService {
 
-    List<Post> getListShortPosts(Long page, Long size);
+    List<PostForGet> getListShortPosts(Long page, Long size);
 
-    List<Post> getListShortPostsWithSort(Long page, Long size, String sort);
+    List<PostForGet> getListShortPostsWithSort(Long page, Long size, String sort);
 
-    List<Post> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search);
+    List<PostForGet> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search);
 
     Long getCountPages(Long size);
 
-    Long addPost(Post post);
+    Long addPost(PostForAdd post);
+
+    PostForGet getPostById(Long id);
 }

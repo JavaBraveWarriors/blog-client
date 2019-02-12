@@ -8,48 +8,32 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Post {
 
     @Id
     @GeneratedValue
-    private Long id;
+    protected Long id;
 
     @NotNull
     @Size(max = 200, message = "Title should be less than 200 characters.")
-    private String title;
+    protected String title;
 
     @NotNull
     @Size(max = 600, message = "Description should be less than 600 characters.")
-    private String description;
+    protected String description;
 
     @NotNull
-    private String text;
+    protected String text;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss±hh")
-    private LocalDateTime timeOfCreation;
+    protected LocalDateTime timeOfCreation;
 
-    private String pathImage;
-
-    @NotNull
-    private Long authorId;
-
-    private String authorName;
-
-    private String authorLastName;
-
-    private Long viewsCount;
-
-    private Long commentsCount;
-
-    private Long likesCount;
+    protected String pathImage;
 
     @NotNull
-    private List<Tag> tags;
-
-    private List<Comment> comments;
+    protected Long authorId;
 
     public Post() {
     }
@@ -111,14 +95,6 @@ public class Post {
         this.pathImage = pathImage;
     }
 
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
     public Long getAuthorId() {
         return authorId;
     }
@@ -127,64 +103,4 @@ public class Post {
         this.authorId = authorId;
     }
 
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public Long getViewsCount() {
-        return viewsCount;
-    }
-
-    public void setViewsCount(Long viewsCount) {
-        this.viewsCount = viewsCount;
-    }
-
-    public Long getCommentsCount() {
-        return commentsCount;
-    }
-
-    public void setCommentsCount(Long commentsCount) {
-        this.commentsCount = commentsCount;
-    }
-
-    public Long getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(Long likesCount) {
-        this.likesCount = likesCount;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public String getAuthorLastName() {
-        return authorLastName;
-    }
-
-    public void setAuthorLastName(String authorLastName) {
-        this.authorLastName = authorLastName;
-    }
-
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", text='" + text + '\'' +
-                ", timeOfCreation=" + timeOfCreation +
-                ", pathImage='" + pathImage + '\'' +
-                ", authorId=" + authorId +
-                ", tags=" + tags +
-                '}';
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }

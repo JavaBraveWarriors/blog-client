@@ -1,9 +1,6 @@
 package com.blog.controller;
 
-import com.blog.model.Page;
-import com.blog.model.Pagination;
-import com.blog.model.Post;
-import com.blog.model.Tag;
+import com.blog.model.*;
 import com.blog.service.PostRestClientService;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,7 @@ public class PostsController {
         pagination.setTotalPages(postService.getCountPages(size));
         pagination.setSize(size);
         pagination.setCurrentPage(page);
-        List<Post> posts;
+        List<PostForGet> posts;
 
         // TODO: do refactoring.
         if (sortCookie != null && sort == null) {
@@ -69,12 +66,23 @@ public class PostsController {
         return "blogPosts";
     }
 
+    @GetMapping("/{id}")
+    public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
+        PostForGet post = postService.getPostById(id);
+        Map<String, String> currentPage = Page.getPageDafaultParams();
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+
+        return "blogPost";
+    }
+
     @GetMapping("/new")
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
 
         Map<String, String> currentPage = Page.getPageDafaultParams();
-        Post post = new Post();
+        PostForAdd post = new PostForAdd();
         post.setTags(new ArrayList<>());
         model.addAttribute("post", post);
 
@@ -86,7 +94,7 @@ public class PostsController {
     }
 
     @PostMapping("/new")
-    public String addPost(@RequestParam Post post) {
+    public String addPost(@ModelAttribute PostForAdd post) {
         Long postId = postService.addPost(post);
         return "redirect:/blog/posts/" + postId;
     }

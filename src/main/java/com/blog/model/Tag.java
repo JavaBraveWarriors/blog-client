@@ -23,6 +23,10 @@ public class Tag {
     public Tag() {
     }
 
+    public Tag(Long id) {
+        this.id = id;
+    }
+
     public Tag(Long id, String title, String pathImage) {
         this.id = id;
         this.title = title;
