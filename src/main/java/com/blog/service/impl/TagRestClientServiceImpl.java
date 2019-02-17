@@ -3,6 +3,7 @@ package com.blog.service.impl;
 import com.blog.model.Tag;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,15 +23,15 @@ public class TagRestClientServiceImpl extends RestClientAbstract implements TagR
         endpoint = "tags";
     }
 
-    @Override
     public List<Tag> getAllTags() {
         entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<List> tags = restTemplate.exchange(
+        ResponseEntity<List<Tag>> tags = restTemplate.exchange(
                 createURLWithEndpoint(endpoint),
                 HttpMethod.GET,
                 entity,
-                List.class
+                new ParameterizedTypeReference<List<Tag>>() {
+                }
         );
         return tags.getBody();
     }

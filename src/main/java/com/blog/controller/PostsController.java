@@ -35,13 +35,9 @@ public class PostsController {
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "sort", required = false) String sort,
             @CookieValue(value = "sort", required = false) String sortCookie,
-            HttpServletResponse response
-    ) {
-        Pagination pagination = new Pagination();
-        pagination.setTotalPages(postService.getCountPages(size));
-        pagination.setSize(size);
-        pagination.setCurrentPage(page);
-        List<PostForGet> posts;
+            HttpServletResponse response) {
+
+        PostListWrapper posts;
 
         // TODO: do refactoring.
         if (sortCookie != null && sort == null) {
@@ -56,11 +52,20 @@ public class PostsController {
         } else {
             posts = postService.getListShortPosts(page, size);
         }
+        Pagination pagination = new Pagination();
+        pagination.setTotalPages(posts.getCountPages());
+        pagination.setSize(size);
+        pagination.setCurrentPage(page);
 
-        Map<String, String> currentPage = Page.getPageDafaultParams();
+        Map<String, String> currentPage = Page.getPageDefaultParams();
         currentPage.put("sort", sort);
+        //TODO: refactor this when will be security
+        ActiveUser user = new ActiveUser();
+        user.setAuthorize(true);
+        user.setId(1L);
 
-        model.addAttribute("posts", posts);
+        model.addAttribute("user", user);
+        model.addAttribute("posts", posts.getPosts());
         model.addAttribute("page", currentPage);
         model.addAttribute("pagination", pagination);
         return "blogPosts";
@@ -69,8 +74,14 @@ public class PostsController {
     @GetMapping("/{id}")
     public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
         PostForGet post = postService.getPostById(id);
-        Map<String, String> currentPage = Page.getPageDafaultParams();
+        Map<String, String> currentPage = Page.getPageDefaultParams();
 
+        //TODO: refactor this when will be security
+        ActiveUser user = new ActiveUser();
+        user.setAuthorize(true);
+        user.setId(1L);
+
+        model.addAttribute("user", user);
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
 
@@ -81,16 +92,35 @@ public class PostsController {
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
 
-        Map<String, String> currentPage = Page.getPageDafaultParams();
+        Map<String, String> currentPage = Page.getPageDefaultParams();
         PostForAdd post = new PostForAdd();
         post.setTags(new ArrayList<>());
+
+        currentPage.put("title", "add");
+
         model.addAttribute("post", post);
-
+        model.addAttribute("title", "");
         model.addAttribute("allTags", tags);
-
         model.addAttribute("page", currentPage);
+        return "formPost";
+    }
 
-        return "blogAddPost";
+    @GetMapping("/{postId}/update")
+    public String getPageForUpdatePost(
+            Model model,
+            @PathVariable(value = "postId") Long postId) {
+        List<Tag> tags = tagService.getAllTags();
+
+        PostForGet post = postService.getPostById(postId);
+        Map<String, String> currentPage = Page.getPageDefaultParams();
+
+        currentPage.put("title", "update");
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+        model.addAttribute("title", "");
+        model.addAttribute("allTags", tags);
+        return "formPost";
     }
 
     @PostMapping("/new")

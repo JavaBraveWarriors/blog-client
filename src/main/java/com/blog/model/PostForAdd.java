@@ -23,4 +23,16 @@ public class PostForAdd extends Post {
         this.tags = tags;
     }
 
+    public String toString() {
+        return "PostForAdd{" +
+                "tags=" + tags +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", text='" + text + '\'' +
+                ", timeOfCreation=" + timeOfCreation +
+                ", pathImage='" + pathImage + '\'' +
+                ", authorId=" + authorId +
+                '}';
+    }
 }

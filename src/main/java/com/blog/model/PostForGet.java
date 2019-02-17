@@ -88,7 +88,7 @@ public class PostForGet extends Post {
     @Override
     public String toString() {
         return "PostForGet{" +
-                "  id=" + id +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", text='" + text + '\'' +
@@ -101,6 +101,7 @@ public class PostForGet extends Post {
                 ", commentsCount=" + commentsCount +
                 ", likesCount=" + likesCount +
                 ", comments=" + comments +
+                ", tags=" + tags +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import com.blog.model.ActiveUser;
 import com.blog.model.Tag;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,10 @@ public class TagController {
         page.put("search", "true");
         page.put("title", "Categories page");
         page.put("menuItem", "blog");
-
+        ActiveUser user = new ActiveUser();
+        user.setAuthorize(true);
+        user.setId(1L);
+        model.addAttribute("user", user);
         model.addAttribute("tags", tags);
         model.addAttribute("page", page);
         return "blogCategories";

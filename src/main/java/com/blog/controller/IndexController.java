@@ -12,7 +12,7 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        Map<String, String> page = Page.getPageDafaultParams();
+        Map<String, String> page = Page.getPageDefaultParams();
         page.put("activeTab", "main");
         model.addAttribute("page", page);
 

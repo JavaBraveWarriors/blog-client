@@ -15,7 +15,7 @@ public class CabinetController {
     @GetMapping("/statistics")
     public String getCabinetStatistic(Model model) {
 
-        Map<String, String> page = Page.getPageDafaultParams();
+        Map<String, String> page = Page.getPageDefaultParams();
 
         page.put("currentPage", "/statistics");
         model.addAttribute("page", page);
@@ -25,7 +25,7 @@ public class CabinetController {
     @GetMapping("/profile")
     public String getProfile(Model model) {
 
-        Map<String, String> page = Page.getPageDafaultParams();
+        Map<String, String> page = Page.getPageDefaultParams();
         page.put("currentPage", "/profile");
         model.addAttribute("page", page);
         return "cabinet";

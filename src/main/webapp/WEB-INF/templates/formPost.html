@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:text="#{blogAddPost.title}"></title>
+    <title th:if="page.get(title) == 'add' " th:text="#{blogAddPost.title}"></title>
+    <title th:if="page.get(title) == 'update' " th:text="#{blogUpdatePost.title}"></title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -31,7 +32,8 @@
             <div class="col-xl-12 form-post ">
                 <div class="card">
                     <h5 class="card-header info-color white-text text-center py-4">
-                        <strong>Новая статья</strong>
+                        <strong th:if="page.get(title) == 'add' " th:text="#{blogAddPost.title}"></strong>
+                        <strong th:if="page.get(title) == 'update' " th:text="#{blogUpdatePost.title}"></strong>
                     </h5>
                     <!--Card content-->
                     <div class="card-body px-lg-5 pt-0">
@@ -44,9 +46,10 @@
                                     <input type="text" id="materialContactFormTitle" name="title" th:field="*{title}"
                                            class="form-control"
                                            required>
-                                    <label for="materialContactFormTitle">Заголовок статьи</label>
+                                    <label for="materialContactFormTitle" th:text="#{formPost.titleOfPost}"></label>
                                     <div class="invalid-feedback ">
-                                        <small style="font-size:0.8rem"> Пожалуйста, введите Заголовок статьи.</small>
+                                        <small style="font-size:0.8rem"
+                                               th:text="#{formPost.titleInvalidMessage}"></small>
                                     </div>
                                 </div>
                                 <!--Subject-->
@@ -54,7 +57,7 @@
                                     <select class="selectpicker"
                                             multiple="multiple"
                                             th:field="*{tags}"
-                                            title="Выберите категории статьи"
+                                            th:title="#{formPost.titleOfListTags}"
                                             data-width="100%" required>
                                         <option
                                                 th:each="tag : ${allTags}"
@@ -63,7 +66,7 @@
                                         </option>
                                     </select>
                                     <div class="invalid-feedback">
-                                        <small style="font-size:0.8rem"> Пожалуйста, Выберите хотя бы одну категорию.
+                                        <small style="font-size:0.8rem" th:text="#{formPost.tagsInvalidMessage}">
                                         </small>
                                     </div>
                                 </div>
@@ -74,15 +77,14 @@
                     <textarea type="text" id="materialContactFormMessage" name='description' th:field="*{description}"
                               class="form-control md-textarea"
                               rows="3" required></textarea>
-                                    <label for="materialContactFormMessage">Короткое описание статьи</label>
+                                    <label for="materialContactFormMessage"
+                                           th:text="#{formPost.titleDescription}"></label>
                                     <div class="invalid-feedback">
-                                        <small style="font-size:0.8rem"> Пожалуйста, напишите короткое описание
-                                            статьи.
+                                        <small style="font-size:0.8rem" th:text="#{formPost.descriptionInvalidMessage}">
                                         </small>
-
                                     </div>
                                 </div>
-                                <!--TODO: add feature -->
+                                <!--TODO: add feature links video-->
                                 <!--&lt;!&ndash; видео url &ndash;&gt;
                                 <div class="col-xl-11 mt-4" id="url1">
                                     <label class="mb-0 ml-2 h5" for="material-url">Url видео на youtube.com</label>
@@ -101,19 +103,20 @@
                                 </div>-->
 
                                 <div class="shadow-textarea col-xl-12 form-group  mt-4">
-                                    <label class="h5" for="FormControlTextarea">Текст статьи</label>
+                                    <label class="h5" for="FormControlTextarea" th:text="#{formPost.titleText}"></label>
                                     <textarea class="form-control z-depth-1"
                                               name='text'
                                               th:field="*{text}"
                                               id="FormControlTextarea"
-                                              rows="10" placeholder="Тут пишите статью...."
+                                              rows="10"
+                                              th:placeholder="#{formPost.placeholderText}"
                                               required></textarea>
                                     <div class="invalid-feedback">
-                                        <small style="font-size:0.8rem"> Пожалуйста, напишите статью.</small>
-
+                                        <small style="font-size:0.8rem"
+                                               th:text="#{formPost.textInvalidMessage}"></small>
                                     </div>
                                 </div>
-                                <!-- сделать работу с изображениями -->
+                                <!-- TODO: add support for img -->
                                 <!-- <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>

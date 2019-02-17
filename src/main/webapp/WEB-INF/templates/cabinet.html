@@ -28,27 +28,32 @@
                 <a class="list-group-item waves-effect"
                    th:classappend="${page.get('currentPage')} == '/statistics' ? active"
                    href="/user/cabinet/statistics">
-                    <i class="fa fa-pie-chart mr-3"></i>Статистика
+                    <i class="fa fa-pie-chart mr-3"></i>
+                    <span th:text="#{cabinet.statistics}"></span>
                 </a>
                 <a class="list-group-item waves-effect"
                    th:classappend="${page.get('currentPage')} == '/profile' ? active"
                    href="/user/cabinet/profile">
-                    <i class="fa fa-user mr-3"></i>Профиль
+                    <i class="fa fa-user mr-3"></i>
+                    <span th:text="#{cabinet.profile}"></span>
                 </a>
                 <a class="list-group-item waves-effect"
                    th:classappend="${page.get('currentPage')} == '/users' ? active"
                    href="/user/cabinet/users">
-                    <i class="fa fa-table mr-3"></i>Подписки
+                    <i class="fa fa-table mr-3"></i>
+                    <span th:text="#{cabinet.users}"></span>
                 </a>
                 <a class="list-group-item waves-effect"
                    th:classappend="${page.get('currentPage')} == '/blog' ? active"
                    href="/user/cabinet/blog">
-                    <i class="fa fa-map mr-3"></i>Блог
+                    <i class="fa fa-map mr-3"></i>
+                    <span th:text="#{cabinet.blog}"></span>
                 </a>
                 <a class="list-group-item waves-effect"
                    th:classappend="${page.get('currentPage')} == '/likes' ? active"
                    href="/user/cabinet/likes">
-                    <i class="fa fa-money mr-3"></i>Закладки
+                    <i class="fa fa-money mr-3"></i>
+                    <span th:text="#{cabinet.likes}"></span>
                 </a>
             </div>
         </div>
@@ -80,14 +85,10 @@
             <div class="modal-header d-flex justify-content-center">
                 <p class="heading">Are you sure?</p>
             </div>
-
             <!--Body-->
             <div class="modal-body">
-
                 <i class="fa fa-times fa-4x animated rotateIn"></i>
-
             </div>
-
             <!--Footer-->
             <div class="modal-footer flex-center">
                 <a href="" class="btn  btn-outline-danger">Yes</a>
@@ -97,12 +98,8 @@
         <!--/.Content-->
     </div>
 </div>
-<footer class="page-footer text-center font-small primary-color-dark darken-2 mt-4 wow fadeIn">
 
-    <!-- подключить у всех один -->
-
-</footer>
-<!--/.Footer-->
+<div th:replace="~{footerFragment::footer}"></div>
 
 <!-- SCRIPTS -->
 <!-- JQuery -->

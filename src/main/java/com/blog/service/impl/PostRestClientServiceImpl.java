@@ -1,8 +1,8 @@
 package com.blog.service.impl;
 
-import com.blog.model.Post;
 import com.blog.model.PostForAdd;
 import com.blog.model.PostForGet;
+import com.blog.model.PostListWrapper;
 import com.blog.service.PostRestClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Service
 public class PostRestClientServiceImpl extends RestClientAbstract implements PostRestClientService {
@@ -27,24 +25,22 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
         endpoint = "posts";
     }
 
-    @Override
-    public List<PostForGet> getListShortPosts(Long page, Long size) {
+    public PostListWrapper getListShortPosts(Long page, Long size) {
         entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<List<PostForGet>> posts = restTemplate.exchange(
+        ResponseEntity<PostListWrapper> posts = restTemplate.exchange(
                 createURLWithEndpoint(endpoint.concat("?page=").concat(page.toString()).concat("&size=").concat(size.toString())),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<List<PostForGet>>() {
+                new ParameterizedTypeReference<PostListWrapper>() {
                 }
         );
         return posts.getBody();
     }
 
-    @Override
-    public List<PostForGet> getListShortPostsWithSort(Long page, Long size, String sort) {
+    public PostListWrapper getListShortPostsWithSort(Long page, Long size, String sort) {
         entity = new HttpEntity<>(null, headers);
-        ResponseEntity<List<PostForGet>> posts = restTemplate.exchange(
+        ResponseEntity<PostListWrapper> posts = restTemplate.exchange(
                 createURLWithEndpoint(
                         endpoint
                                 .concat("?page=")
@@ -55,32 +51,17 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
                                 .concat(sort)),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<List<PostForGet>>() {
+                new ParameterizedTypeReference<PostListWrapper>() {
                 }
         );
         return posts.getBody();
     }
 
-    @Override
-    public List<PostForGet> getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search) {
+    public PostListWrapper getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search) {
         // TODO:
         return getListShortPostsWithSort(page, size, sort);
     }
 
-    @Override
-    public Long getCountPages(Long size) {
-        entity = new HttpEntity<>(null, headers);
-        ResponseEntity<Long> count = restTemplate.exchange(
-                createURLWithEndpoint(endpoint.concat("/count?size=") + size),
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<Long>() {
-                }
-        );
-        return count.getBody();
-    }
-
-    @Override
     public Long addPost(PostForAdd post) {
         entity = new HttpEntity<>(convertToJson(post), headers);
         ResponseEntity<Long> postId = restTemplate.exchange(
@@ -93,7 +74,6 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
         return postId.getBody();
     }
 
-    @Override
     public PostForGet getPostById(Long id) {
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<PostForGet> post = restTemplate.exchange(

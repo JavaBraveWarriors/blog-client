@@ -5,7 +5,7 @@
         <div>
             <h3 class="card-title pt-2"><strong th:text="${tag.title}"></strong></h3>
             <a class="btn btn-pink" href="" th:href="@{blog/posts(tag=${tag.id})}"><i
-                    class="fa fa-clone left"></i>Читать все статьи</a>
+                    class="fa fa-clone left"></i> <span th:text="#{tag.readAll}"></span></a>
         </div>
     </div>
 </div>

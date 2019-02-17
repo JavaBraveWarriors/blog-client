@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Page {
 
-    public static Map<String, String> getPageDafaultParams() {
+    public static Map<String, String> getPageDefaultParams() {
         Map<String, String> page = new HashMap<>();
         page.put("search", "true");
         page.put("menuItem", "blog");

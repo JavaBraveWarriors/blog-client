@@ -39,7 +39,7 @@
 
 <span th:fragment="postLikesCount(likesCount)" class="text-muted" xmlns:th="http://www.thymeleaf.org">
             <!-- TODO: add count Likes and checked user like post or not-->
-            <!--user liked-->
+    <!--user liked-->
             <a href="/posts/removeLike/">
                 <i class="fa fa-heart fa-2x red-text"></i>
                 <!--[[${likesCount}]]-->
@@ -63,12 +63,12 @@
             th:text="${tag.title}">
     </strong>
 </a>
-<p th:fragment="postAuthor(post)" class="card-subtitle" xmlns:th="http://www.thymeleaf.org">Автор:
+<p th:fragment="postAuthor(post)" class="card-subtitle lead" xmlns:th="http://www.thymeleaf.org">Автор:
     <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
        th:text="${post.authorName} + ' ' +${post.authorLastName}">
     </a>
 </p>
-<p th:fragment="postDate(date)" class="mt-1" xmlns:th="http://www.thymeleaf.org">
+<p th:fragment="postDate(date)" class="mt-1 " xmlns:th="http://www.thymeleaf.org">
     <strong th:with="df=#{date.format}"><i class="fa fa-clock-o"></i>
         <span th:text="${#temporals.format(date, df)}"></span>
     </strong>
