@@ -5,6 +5,7 @@ import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 import com.blog.model.Pagination;
 import com.blog.service.CommentRestClientService;
+import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,12 @@ import javax.validation.Valid;
 public class CommentController {
 
     private CommentRestClientService commentRestClientService;
+    private PageService pageService;
 
     @Autowired
-    public CommentController(CommentRestClientService commentRestClientService) {
+    public CommentController(CommentRestClientService commentRestClientService, PageService pageService) {
         this.commentRestClientService = commentRestClientService;
+        this.pageService = pageService;
     }
 
     @GetMapping("/post/{postId}")
@@ -31,12 +34,8 @@ public class CommentController {
             @PathVariable(value = "postId") Long postId) {
         CommentListWrapper commentListWrapper = commentRestClientService.getListOfCommentsByPostId(page, size, postId);
 
-        //TODO: refactor this when will be security
-        ActiveUser user = new ActiveUser();
-        user.setAuthorize(true);
-        user.setId(1L);
+        setActiveUserInModelAttribute(model);
 
-        model.addAttribute("user", user);
         model.addAttribute("comment", new Comment());
         model.addAttribute("postId", postId);
         model.addAttribute("comments", commentListWrapper.getCommentsPage());
@@ -50,11 +49,10 @@ public class CommentController {
             @RequestParam(value = "page", required = false, defaultValue = "1") Long page,
             @RequestParam(value = "size", required = false, defaultValue = "10") Long size,
             @PathVariable(value = "postId") Long postId) {
-        Pagination pagination = new Pagination();
-
-        pagination.setTotalPages(commentRestClientService.getCountCommentPagesInPost(postId, size));
-        pagination.setSize(size);
-        pagination.setCurrentPage(page);
+        Pagination pagination = pageService.getPagination(
+                size,
+                commentRestClientService.getCountCommentPagesInPost(postId, size),
+                page);
 
         model.addAttribute("pagination", pagination);
 
@@ -64,6 +62,7 @@ public class CommentController {
     @PostMapping("/post")
     public String addComment(@Valid Comment comment) {
         commentRestClientService.addComment(comment);
+
         return "modals::success";
     }
 
@@ -73,7 +72,9 @@ public class CommentController {
             @PathVariable(value = "postId") Long postId,
             @PathVariable(value = "id") Long commentId) {
         commentRestClientService.deleteComment(postId, commentId);
+
         model.addAttribute("message", "Комментарий успешно добавлен.");
+
         return "modals::success";
     }
 
@@ -82,7 +83,9 @@ public class CommentController {
             Model model,
             @PathVariable(value = "id") Long commentId) {
         Comment comment = commentRestClientService.getCommentById(commentId);
+
         model.addAttribute("comment", comment);
+
         return "modals::update";
     }
 
@@ -90,7 +93,18 @@ public class CommentController {
     public String updateComment(
             Model model, @Valid Comment comment) {
         commentRestClientService.updateComment(comment);
+
         model.addAttribute("comment", comment);
-        return "modals::update";
+
+        return "modals::success";
+    }
+
+    //TODO: refactor this when will be security. UserId must back from rest-api with every request.
+    private void setActiveUserInModelAttribute(Model model) {
+        ActiveUser user = new ActiveUser();
+        user.setAuthorize(true);
+        user.setId(1L);
+
+        model.addAttribute("user", user);
     }
 }

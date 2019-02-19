@@ -1,14 +1,15 @@
 package com.blog.controller;
 
 import com.blog.model.*;
+import com.blog.service.PageService;
 import com.blog.service.PostRestClientService;
+import com.blog.service.PostService;
 import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,20 @@ import java.util.Map;
 @RequestMapping("/blog/posts")
 public class PostsController {
 
-    private PostRestClientService postService;
+    private PostService postService;
+    private PostRestClientService postRestClientService;
     private TagRestClientService tagService;
+    private PageService pageService;
 
     @Autowired
-    public PostsController(PostRestClientService postService, TagRestClientService tagService) {
+    public PostsController(PostService postService,
+                           TagRestClientService tagService,
+                           PostRestClientService postRestClientService,
+                           PageService pageService) {
+        this.postRestClientService = postRestClientService;
         this.postService = postService;
         this.tagService = tagService;
+        this.pageService = pageService;
     }
 
     @GetMapping("")
@@ -37,51 +45,31 @@ public class PostsController {
             @CookieValue(value = "sort", required = false) String sortCookie,
             HttpServletResponse response) {
 
-        PostListWrapper posts;
+        PostListWrapper posts = postService.routeRequestForListPosts(page, size, sort, search, sortCookie, response);
 
-        // TODO: do refactoring.
-        if (sortCookie != null && sort == null) {
-            sort = sortCookie;
-            posts = postService.getListShortPostsWithSort(page, size, sort);
-        } else if (sortCookie != null && !sortCookie.isEmpty() && !sort.equals(sortCookie)) {
-            response.addCookie(new Cookie("sort", sort));
-            posts = postService.getListShortPostsWithSort(page, size, sort);
-        } else if ((sortCookie == null || sortCookie.isEmpty()) && sort != null) {
-            response.addCookie(new Cookie("sort", sort));
-            posts = postService.getListShortPostsWithSort(page, size, sort);
-        } else {
-            posts = postService.getListShortPosts(page, size);
-        }
-        Pagination pagination = new Pagination();
-        pagination.setTotalPages(posts.getCountPages());
-        pagination.setSize(size);
-        pagination.setCurrentPage(page);
+        Pagination pagination = pageService.getPagination(size, posts.getCountPages(), page);
 
-        Map<String, String> currentPage = Page.getPageDefaultParams();
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
         currentPage.put("sort", sort);
-        //TODO: refactor this when will be security
-        ActiveUser user = new ActiveUser();
-        user.setAuthorize(true);
-        user.setId(1L);
 
-        model.addAttribute("user", user);
+        setActiveUserInModelAttribute(model);
+
         model.addAttribute("posts", posts.getPosts());
         model.addAttribute("page", currentPage);
         model.addAttribute("pagination", pagination);
+
         return "blogPosts";
     }
 
     @GetMapping("/{id}")
     public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
-        PostForGet post = postService.getPostById(id);
-        Map<String, String> currentPage = Page.getPageDefaultParams();
 
-        //TODO: refactor this when will be security
-        ActiveUser user = new ActiveUser();
-        user.setAuthorize(true);
-        user.setId(1L);
+        PostForGet post = postRestClientService.getPostById(id);
 
-        model.addAttribute("user", user);
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
+
+        setActiveUserInModelAttribute(model);
+
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
 
@@ -92,11 +80,13 @@ public class PostsController {
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
 
-        Map<String, String> currentPage = Page.getPageDefaultParams();
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
         PostForAdd post = new PostForAdd();
         post.setTags(new ArrayList<>());
 
         currentPage.put("title", "add");
+
+        setActiveUserInModelAttribute(model);
 
         model.addAttribute("post", post);
         model.addAttribute("title", "");
@@ -111,10 +101,12 @@ public class PostsController {
             @PathVariable(value = "postId") Long postId) {
         List<Tag> tags = tagService.getAllTags();
 
-        PostForGet post = postService.getPostById(postId);
-        Map<String, String> currentPage = Page.getPageDefaultParams();
+        PostForGet post = postRestClientService.getPostById(postId);
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
 
         currentPage.put("title", "update");
+
+        setActiveUserInModelAttribute(model);
 
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
@@ -125,7 +117,16 @@ public class PostsController {
 
     @PostMapping("/new")
     public String addPost(@ModelAttribute PostForAdd post) {
-        Long postId = postService.addPost(post);
+        Long postId = postRestClientService.addPost(post);
         return "redirect:/blog/posts/" + postId;
+    }
+
+    //TODO: refactor this when will be security. UserId must back from rest-api with every request.
+    private void setActiveUserInModelAttribute(Model model) {
+        ActiveUser user = new ActiveUser();
+        user.setAuthorize(true);
+        user.setId(1L);
+
+        model.addAttribute("user", user);
     }
 }
