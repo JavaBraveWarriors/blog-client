@@ -1,9 +1,9 @@
 package com.blog.controller;
 
+import com.blog.dao.TagDao;
 import com.blog.model.ActiveUser;
 import com.blog.model.Tag;
 import com.blog.service.PageService;
-import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +17,11 @@ import java.util.Map;
 @RequestMapping("/blog")
 public class TagController {
 
-    private TagRestClientService tagService;
+    private TagDao tagService;
     private PageService pageService;
 
     @Autowired
-    public TagController(PageService pageService, TagRestClientService tagService) {
+    public TagController(PageService pageService, TagDao tagService) {
         this.tagService = tagService;
         this.pageService = pageService;
     }

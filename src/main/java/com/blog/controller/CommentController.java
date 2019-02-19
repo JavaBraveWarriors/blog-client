@@ -1,10 +1,10 @@
 package com.blog.controller;
 
+import com.blog.dao.CommentDao;
 import com.blog.model.ActiveUser;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 import com.blog.model.Pagination;
-import com.blog.service.CommentRestClientService;
 import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +17,12 @@ import javax.validation.Valid;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private CommentRestClientService commentRestClientService;
+    private CommentDao commentDao;
     private PageService pageService;
 
     @Autowired
-    public CommentController(CommentRestClientService commentRestClientService, PageService pageService) {
-        this.commentRestClientService = commentRestClientService;
+    public CommentController(CommentDao commentDao, PageService pageService) {
+        this.commentDao = commentDao;
         this.pageService = pageService;
     }
 
@@ -32,7 +32,7 @@ public class CommentController {
             @RequestParam(value = "page", required = false, defaultValue = "1") Long page,
             @RequestParam(value = "size", required = false, defaultValue = "10") Long size,
             @PathVariable(value = "postId") Long postId) {
-        CommentListWrapper commentListWrapper = commentRestClientService.getListOfCommentsByPostId(page, size, postId);
+        CommentListWrapper commentListWrapper = commentDao.getListOfCommentsByPostId(page, size, postId);
 
         setActiveUserInModelAttribute(model);
 
@@ -51,7 +51,7 @@ public class CommentController {
             @PathVariable(value = "postId") Long postId) {
         Pagination pagination = pageService.getPagination(
                 size,
-                commentRestClientService.getCountCommentPagesInPost(postId, size),
+                commentDao.getCountCommentPagesInPost(postId, size),
                 page);
 
         model.addAttribute("pagination", pagination);
@@ -61,7 +61,7 @@ public class CommentController {
 
     @PostMapping("/post")
     public String addComment(@Valid Comment comment) {
-        commentRestClientService.addComment(comment);
+        commentDao.addComment(comment);
 
         return "modals::success";
     }
@@ -71,7 +71,7 @@ public class CommentController {
             Model model,
             @PathVariable(value = "postId") Long postId,
             @PathVariable(value = "id") Long commentId) {
-        commentRestClientService.deleteComment(postId, commentId);
+        commentDao.deleteComment(postId, commentId);
 
         model.addAttribute("message", "Комментарий успешно добавлен.");
 
@@ -82,7 +82,7 @@ public class CommentController {
     public String getFormForUpdate(
             Model model,
             @PathVariable(value = "id") Long commentId) {
-        Comment comment = commentRestClientService.getCommentById(commentId);
+        Comment comment = commentDao.getCommentById(commentId);
 
         model.addAttribute("comment", comment);
 
@@ -92,7 +92,7 @@ public class CommentController {
     @PutMapping("/post")
     public String updateComment(
             Model model, @Valid Comment comment) {
-        commentRestClientService.updateComment(comment);
+        commentDao.updateComment(comment);
 
         model.addAttribute("comment", comment);
 

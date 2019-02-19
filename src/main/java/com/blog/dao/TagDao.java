@@ -1,10 +1,10 @@
-package com.blog.service;
+package com.blog.dao;
 
 import com.blog.model.Tag;
 
 import java.util.List;
 
-public interface TagRestClientService {
+public interface TagDao {
 
     List<Tag> getAllTags();
 }

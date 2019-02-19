@@ -1,9 +1,9 @@
-package com.blog.service;
+package com.blog.dao;
 
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 
-public interface CommentRestClientService {
+public interface CommentDao {
 
     CommentListWrapper getListOfCommentsByPostId(Long page, Long size, Long postId);
 

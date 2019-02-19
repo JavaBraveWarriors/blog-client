@@ -1,9 +1,9 @@
-package com.blog.service.impl;
+package com.blog.dao.impl;
 
-import com.blog.model.PostForAdd;
-import com.blog.model.PostForGet;
+import com.blog.dao.PostDao;
 import com.blog.model.PostListWrapper;
-import com.blog.service.PostRestClientService;
+import com.blog.model.RequestPostDto;
+import com.blog.model.ResponsePostDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class PostRestClientServiceImpl extends RestClientAbstract implements PostRestClientService {
+public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao {
 
     @Autowired
-    public PostRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
+    public PostDaoRestClientImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.jsonConverter = jsonConverter;
@@ -62,7 +62,7 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
         return getListShortPostsWithSort(page, size, sort);
     }
 
-    public Long addPost(PostForAdd post) {
+    public Long addPost(RequestPostDto post) {
         entity = new HttpEntity<>(convertToJson(post), headers);
         ResponseEntity<Long> postId = restTemplate.exchange(
                 createURLWithEndpoint(endpoint),
@@ -74,15 +74,25 @@ public class PostRestClientServiceImpl extends RestClientAbstract implements Pos
         return postId.getBody();
     }
 
-    public PostForGet getPostById(Long id) {
+    public ResponsePostDto getPostById(Long id) {
         entity = new HttpEntity<>(null, headers);
-        ResponseEntity<PostForGet> post = restTemplate.exchange(
+        ResponseEntity<ResponsePostDto> post = restTemplate.exchange(
                 createURLWithEndpoint(endpoint.concat("/").concat(id.toString())),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<PostForGet>() {
+                new ParameterizedTypeReference<ResponsePostDto>() {
                 }
         );
         return post.getBody();
+    }
+
+    public void updatePost(RequestPostDto post) {
+        entity = new HttpEntity<>(convertToJson(post), headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                createURLWithEndpoint(endpoint),
+                HttpMethod.PUT,
+                entity,
+                String.class
+        );
     }
 }

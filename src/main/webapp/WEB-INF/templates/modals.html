@@ -44,7 +44,7 @@
                 <div class="modal-body mx-3">
 
                     <div class="form-group shadow-textarea mt-4 col-xl-12">
-                        <label for="quickReplyFormComment">Your comment</label>
+                        <label for="quickReplyFormComment"></label>
                         <textarea
                                 th:field="*{text}"
                                 class="form-control z-depth-1"
@@ -52,7 +52,7 @@
                                 rows="5"
                                 required></textarea>
                         <div class="invalid-feedback">
-                            <small style="font-size:0.8rem"> Пожалуйста, введите комментарий.</small>
+                            <small style="font-size:0.8rem" th:text="#{comment.textInvalidMessage}"></small>
                         </div>
                         <!--TODO: refactored when will added security.-->
                         <input type="hidden" th:attr="name='authorId'" th:value="1">

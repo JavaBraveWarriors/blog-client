@@ -1,10 +1,10 @@
 package com.blog.controller;
 
+import com.blog.dao.PostDao;
+import com.blog.dao.TagDao;
 import com.blog.model.*;
 import com.blog.service.PageService;
-import com.blog.service.PostRestClientService;
 import com.blog.service.PostService;
-import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +20,16 @@ import java.util.Map;
 public class PostsController {
 
     private PostService postService;
-    private PostRestClientService postRestClientService;
-    private TagRestClientService tagService;
+    private PostDao postDao;
+    private TagDao tagService;
     private PageService pageService;
 
     @Autowired
     public PostsController(PostService postService,
-                           TagRestClientService tagService,
-                           PostRestClientService postRestClientService,
+                           TagDao tagService,
+                           PostDao postDao,
                            PageService pageService) {
-        this.postRestClientService = postRestClientService;
+        this.postDao = postDao;
         this.postService = postService;
         this.tagService = tagService;
         this.pageService = pageService;
@@ -64,7 +64,7 @@ public class PostsController {
     @GetMapping("/{id}")
     public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
 
-        PostForGet post = postRestClientService.getPostById(id);
+        ResponsePostDto post = postDao.getPostById(id);
 
         Map<String, String> currentPage = pageService.getPageDefaultParams();
 
@@ -81,7 +81,7 @@ public class PostsController {
         List<Tag> tags = tagService.getAllTags();
 
         Map<String, String> currentPage = pageService.getPageDefaultParams();
-        PostForAdd post = new PostForAdd();
+        RequestPostDto post = new RequestPostDto();
         post.setTags(new ArrayList<>());
 
         currentPage.put("title", "add");
@@ -101,7 +101,7 @@ public class PostsController {
             @PathVariable(value = "postId") Long postId) {
         List<Tag> tags = tagService.getAllTags();
 
-        PostForGet post = postRestClientService.getPostById(postId);
+        ResponsePostDto post = postDao.getPostById(postId);
         Map<String, String> currentPage = pageService.getPageDefaultParams();
 
         currentPage.put("title", "update");
@@ -115,9 +115,27 @@ public class PostsController {
         return "formPost";
     }
 
+    @PostMapping("/{postId}/update")
+    public String updatePost(
+            Model model,
+            @PathVariable(value = "postId") Long postId,
+            @ModelAttribute RequestPostDto post) {
+
+        postDao.updatePost(post);
+
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
+
+        setActiveUserInModelAttribute(model);
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+        model.addAttribute("title", "");
+        return "redirect:/blog/posts/" + postId;
+    }
+
     @PostMapping("/new")
-    public String addPost(@ModelAttribute PostForAdd post) {
-        Long postId = postRestClientService.addPost(post);
+    public String addPost(@ModelAttribute RequestPostDto post) {
+        Long postId = postDao.addPost(post);
         return "redirect:/blog/posts/" + postId;
     }
 

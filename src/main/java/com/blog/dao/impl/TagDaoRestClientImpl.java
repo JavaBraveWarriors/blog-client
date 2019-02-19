@@ -1,7 +1,7 @@
-package com.blog.service.impl;
+package com.blog.dao.impl;
 
+import com.blog.dao.TagDao;
 import com.blog.model.Tag;
-import com.blog.service.TagRestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -14,10 +14,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public class TagRestClientServiceImpl extends RestClientAbstract implements TagRestClientService {
+public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
 
     @Autowired
-    public TagRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers) {
+    public TagDaoRestClientImpl(RestTemplate restTemplate, HttpHeaders headers) {
         this.restTemplate = restTemplate;
         this.headers = headers;
         endpoint = "tags";

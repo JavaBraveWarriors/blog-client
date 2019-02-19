@@ -52,7 +52,7 @@
                         </div>
                         <hr>
                         <div class="tags">
-                            <h5>Теги:</h5>
+                            <h5 th:text="#{blogPost.tags}"></h5>
                             <div th:replace="~{postFragment::postTags(${post.tags})}"></div>
                         </div>
                         <div class="card-footer bg-transparent d-flex justify-content-around">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="card mb-4 wow fadeIn">
                         <div class="card-header font-weight-bold">
-                            <span>О авторе</span>
+                            <span th:text="#{blogPost.aboutAuthor}"></span>
                             <span class="pull-right">
                                     <a href="">
                                         <i class="fa fa-facebook mr-2"></i>

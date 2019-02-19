@@ -1,6 +1,6 @@
 <div class="card card-comments mb-4 wow fadeIn" style="visibility: visible; animation-name: fadeIn;"
      xmlns:th="http://www.thymeleaf.org">
-    <div class="card-header font-weight-bold">[[${countComments}]] comments</div>
+    <div class="card-header font-weight-bold">[[${countComments}]] <span th:text="#{comments.comments}"></span></div>
     <div class="card-body container-fluid">
         <div th:each="comment : ${comments}" class="media d-block d-md-flex mt-4 col-xl-12">
             <a th:href="'/users/' + ${comment.authorId}">
@@ -45,7 +45,7 @@
         <!-- Quick Reply -->
         <form class="needs-validation" th:object="${comment}" novalidate id="new_comment">
             <div class="form-group shadow-textarea mt-4 col-xl-12">
-                <label for="quickReplyFormComment">Your comment</label>
+                <label for="quickReplyFormComment" th:text="#{modal.yourComment}"></label>
                 <textarea
                         th:field="*{text}"
                         class="form-control z-depth-1"

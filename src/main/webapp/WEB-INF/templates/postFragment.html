@@ -63,7 +63,8 @@
             th:text="${tag.title}">
     </strong>
 </a>
-<p th:fragment="postAuthor(post)" class="card-subtitle lead" xmlns:th="http://www.thymeleaf.org">Автор:
+<p th:fragment="postAuthor(post)" class="card-subtitle lead" xmlns:th="http://www.thymeleaf.org">
+    <span th:text="#{postFragment.author}"></span>
     <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
        th:text="${post.authorName} + ' ' +${post.authorLastName}">
     </a>

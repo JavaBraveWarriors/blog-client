@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:if="page.get(title) == 'add' " th:text="#{blogAddPost.title}"></title>
-    <title th:if="page.get(title) == 'update' " th:text="#{blogUpdatePost.title}"></title>
+    <title th:if="${page.get('title')} == 'add' " th:text="#{blogAddPost.title}"></title>
+    <title th:if="${page.get('title')} == 'update' " th:text="#{blogUpdatePost.title}"></title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -32,8 +32,8 @@
             <div class="col-xl-12 form-post ">
                 <div class="card">
                     <h5 class="card-header info-color white-text text-center py-4">
-                        <strong th:if="page.get(title) == 'add' " th:text="#{blogAddPost.title}"></strong>
-                        <strong th:if="page.get(title) == 'update' " th:text="#{blogUpdatePost.title}"></strong>
+                        <strong th:if="${page.get('title')} == 'add' " th:text="#{blogAddPost.title}"></strong>
+                        <strong th:if="${page.get('title')} == 'update' " th:text="#{blogUpdatePost.title}"></strong>
                     </h5>
                     <!--Card content-->
                     <div class="card-body px-lg-5 pt-0">
@@ -56,12 +56,14 @@
                                 <div class="col-xl-6 md-form mt-4 ">
                                     <select class="selectpicker"
                                             multiple="multiple"
-                                            th:field="*{tags}"
+                                            id="tags"
+                                            name="tags"
                                             th:title="#{formPost.titleOfListTags}"
                                             data-width="100%" required>
                                         <option
                                                 th:each="tag : ${allTags}"
                                                 th:value="${tag.id}"
+                                                th:selected="${post.tags.contains(tag)}"
                                                 th:text="${tag.title}">
                                         </option>
                                     </select>
@@ -72,6 +74,8 @@
                                 </div>
                                 <!--TODO: refactored when will added security.-->
                                 <input type="hidden" th:attr="name='authorId'" th:value="1">
+                                <input th:if="${page.get('title')} == 'update'" type="hidden" th:attr="name='id'"
+                                       th:value="${post.id}">
                                 <!--Message-->
                                 <div class="col-xl-12 md-form mt-4">
                     <textarea type="text" id="materialContactFormMessage" name='description' th:field="*{description}"

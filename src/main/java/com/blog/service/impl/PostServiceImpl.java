@@ -1,7 +1,7 @@
 package com.blog.service.impl;
 
 import com.blog.model.PostListWrapper;
-import com.blog.service.PostRestClientService;
+import com.blog.dao.PostDao;
 import com.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private PostRestClientService postService;
+    private PostDao postDao;
 
     @Autowired
-    public PostServiceImpl(PostRestClientService postService) {
-        this.postService = postService;
+    public PostServiceImpl(PostDao postDao) {
+        this.postDao = postDao;
     }
 
     @Override
@@ -29,15 +29,15 @@ public class PostServiceImpl implements PostService {
             HttpServletResponse response) {
         if (sortCookie != null && sort == null) {
             sort = sortCookie;
-            return postService.getListShortPostsWithSort(page, size, sort);
+            return postDao.getListShortPostsWithSort(page, size, sort);
         } else if (sortCookie != null && !sortCookie.isEmpty() && !sort.equals(sortCookie)) {
             response.addCookie(new Cookie("sort", sort));
-            return postService.getListShortPostsWithSort(page, size, sort);
+            return postDao.getListShortPostsWithSort(page, size, sort);
         } else if ((sortCookie == null || sortCookie.isEmpty()) && sort != null) {
             response.addCookie(new Cookie("sort", sort));
-            return postService.getListShortPostsWithSort(page, size, sort);
+            return postDao.getListShortPostsWithSort(page, size, sort);
         } else {
-            return postService.getListShortPosts(page, size);
+            return postDao.getListShortPosts(page, size);
         }
     }
 }

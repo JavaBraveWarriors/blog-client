@@ -1,10 +1,10 @@
-package com.blog.service;
+package com.blog.dao;
 
-import com.blog.model.PostForAdd;
-import com.blog.model.PostForGet;
 import com.blog.model.PostListWrapper;
+import com.blog.model.RequestPostDto;
+import com.blog.model.ResponsePostDto;
 
-public interface PostRestClientService {
+public interface PostDao {
 
     PostListWrapper getListShortPosts(Long page, Long size);
 
@@ -12,7 +12,9 @@ public interface PostRestClientService {
 
     PostListWrapper getListShortPostsWithSortAndSearch(Long page, Long size, String sort, String search);
 
-    Long addPost(PostForAdd post);
+    Long addPost(RequestPostDto post);
 
-    PostForGet getPostById(Long id);
+    ResponsePostDto getPostById(Long id);
+
+    void updatePost(RequestPostDto post);
 }

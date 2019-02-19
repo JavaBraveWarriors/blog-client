@@ -1,8 +1,8 @@
-package com.blog.service.impl;
+package com.blog.dao.impl;
 
+import com.blog.dao.CommentDao;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
-import com.blog.service.CommentRestClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class CommentRestClientServiceImpl extends RestClientAbstract implements CommentRestClientService {
+public class CommentDaoRestClientImpl extends RestClientAbstract implements CommentDao {
 
     private static String SLASH = "/";
 
     @Autowired
-    public CommentRestClientServiceImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
+    public CommentDaoRestClientImpl(RestTemplate restTemplate, HttpHeaders headers, ObjectMapper jsonConverter) {
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.jsonConverter = jsonConverter;
