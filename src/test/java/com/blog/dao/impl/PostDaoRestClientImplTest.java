@@ -45,6 +45,7 @@ public class PostDaoRestClientImplTest {
 
     private static PostListWrapper COMMENTS_LIST_WRAPPER;
     private static List<ResponsePostDto> POSTS;
+    private static ResponsePostDto POST_DTO;
 
     private static Long COUNT_PAGES = 10L;
     private static Long COUNT_POSTS = 100L;
@@ -53,14 +54,21 @@ public class PostDaoRestClientImplTest {
     private static String SORT = "sortedField";
     private static String SEARCH = "testSearch";
     private static Long POST_ID_ADDED_POST = 12L;
+    private static Long POST_ID = 1L;
 
-    private static RequestPostDto ADDED_POST = new RequestPostDto();
+    private static RequestPostDto ADDED_POST;
 
     @BeforeClass
     public static void setUp() {
         COMMENTS_LIST_WRAPPER = new PostListWrapper();
+
+        ADDED_POST = new RequestPostDto();
+
         POSTS = new ArrayList<>();
         POSTS.add(new ResponsePostDto());
+
+        POST_DTO = new ResponsePostDto();
+        POST_DTO.setId(POST_ID);
 
         COMMENTS_LIST_WRAPPER.setCountPages(COUNT_PAGES);
         COMMENTS_LIST_WRAPPER.setCountPosts(COUNT_POSTS);
@@ -132,7 +140,6 @@ public class PostDaoRestClientImplTest {
                 any(ParameterizedTypeReference.class));
 
         PostListWrapper listShortPosts = postDaoRestClient.getListShortPostsWithSort(PAGE, SIZE, SORT);
-
     }
 
     @Test
@@ -171,8 +178,96 @@ public class PostDaoRestClientImplTest {
     }
 
     @Test
-    public void addPost() throws JsonProcessingException {
+    public void addPostSuccess() throws JsonProcessingException {
         ResponseEntity<Long> responseEntity = new ResponseEntity<>(POST_ID_ADDED_POST, HttpStatus.CREATED);
+        when(restTemplate.exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+        when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
+
+        postDaoRestClient.addPost(ADDED_POST);
+
+        verify(restTemplate, times(1))
+                .exchange(anyString(),
+                        any(HttpMethod.class),
+                        any(HttpEntity.class),
+                        any(ParameterizedTypeReference.class));
+        verify(objectMapper, times(1)).writeValueAsString(any(Comment.class));
+    }
+
+    @Test(expected = HttpClientErrorException.BadRequest.class)
+    public void addIncorrectPost() throws JsonProcessingException {
+        doThrow(HttpClientErrorException.BadRequest.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class));
+        when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
+
+        postDaoRestClient.addPost(ADDED_POST);
+    }
+
+    @Test(expected = HttpClientErrorException.NotFound.class)
+    public void addPostWIthNotExistTag() throws JsonProcessingException {
+        doThrow(HttpClientErrorException.NotFound.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class));
+        when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
+
+        postDaoRestClient.addPost(ADDED_POST);
+    }
+
+    @Test
+    public void getPostByIdSuccess() {
+        ResponseEntity<ResponsePostDto> responseEntity = new ResponseEntity<>(POST_DTO, HttpStatus.OK);
+        when(restTemplate.exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+
+        ResponsePostDto postDto = postDaoRestClient.getPostById(POST_ID);
+
+        assertEquals(POST_ID, postDto.getId());
+
+        verify(restTemplate, times(1))
+                .exchange(anyString(),
+                        any(HttpMethod.class),
+                        any(HttpEntity.class),
+                        any(ParameterizedTypeReference.class));
+    }
+
+    @Test(expected = HttpClientErrorException.BadRequest.class)
+    public void getPostByIncorrectId() {
+        ResponseEntity<ResponsePostDto> responseEntity = new ResponseEntity<>(POST_DTO, HttpStatus.BAD_REQUEST);
+        doThrow(HttpClientErrorException.BadRequest.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class));
+
+        ResponsePostDto postDto = postDaoRestClient.getPostById(POST_ID);
+    }
+
+    @Test(expected = HttpClientErrorException.NotFound.class)
+    public void getPostByNotExistId() {
+        ResponseEntity<ResponsePostDto> responseEntity = new ResponseEntity<>(POST_DTO, HttpStatus.NOT_FOUND);
+        doThrow(HttpClientErrorException.NotFound.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class));
+
+        ResponsePostDto postDto = postDaoRestClient.getPostById(POST_ID);
+    }
+
+    @Test
+    public void updatePostSuccess() throws JsonProcessingException {
+        ResponseEntity<Long> responseEntity = new ResponseEntity<>(null, HttpStatus.OK);
         when(restTemplate.exchange(
                 anyString(),
                 any(HttpMethod.class),
@@ -180,7 +275,7 @@ public class PostDaoRestClientImplTest {
                 any(Class.class))).thenReturn(responseEntity);
         when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
 
-        postDaoRestClient.addPost(ADDED_POST);
+        postDaoRestClient.updatePost(ADDED_POST);
 
         verify(restTemplate, times(1))
                 .exchange(anyString(),
@@ -190,11 +285,27 @@ public class PostDaoRestClientImplTest {
         verify(objectMapper, times(1)).writeValueAsString(any(Comment.class));
     }
 
-    @Test
-    public void getPostById() {
+    @Test(expected = HttpClientErrorException.NotFound.class)
+    public void updateNotExistPost() throws JsonProcessingException {
+        doThrow(HttpClientErrorException.NotFound.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(Class.class));
+        when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
+
+        postDaoRestClient.updatePost(ADDED_POST);
     }
 
-    @Test
-    public void updatePost() {
+    @Test(expected = HttpClientErrorException.BadRequest.class)
+    public void updateIncorrectPost() throws JsonProcessingException {
+        doThrow(HttpClientErrorException.BadRequest.class).when(restTemplate).exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(Class.class));
+        when(objectMapper.writeValueAsString(any(Comment.class))).thenReturn("json-object");
+
+        postDaoRestClient.updatePost(ADDED_POST);
     }
 }
