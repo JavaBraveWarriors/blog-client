@@ -1,8 +1,6 @@
 package com.blog.dao.impl;
 
-
 import com.blog.config.SpringTestConfig;
-import com.blog.dao.impl.CommentDaoRestClientImpl;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;

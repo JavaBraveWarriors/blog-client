@@ -3,7 +3,6 @@ package com.blog.service.impl;
 import com.blog.model.Pagination;
 import com.blog.service.PageService;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +17,6 @@ public class PageServiceImpl implements PageService {
         pagination.setSize(size);
         pagination.setCurrentPage(page);
         return pagination;
-    }
-
-    @Override
-    public void setDefaultModelAttributes(Model model) {
-
     }
 
     @Override
