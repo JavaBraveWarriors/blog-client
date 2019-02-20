@@ -15,6 +15,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * This interface implementation {TagDao} allows operations to easily manage via restTemplate with remote server.
+ *
+ * @author Aliaksandr Yeutushenka
+ */
 @Repository
 public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
 

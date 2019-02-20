@@ -16,6 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * This interface implementation {PostDao} allows operations to easily manage via restTemplate with remote server.
+ *
+ * @author Aliaksandr Yeutushenka
+ */
 @Repository
 public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao {
 

@@ -15,6 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * This interface implementation {CommentDao} allows operations to easily manage via restTemplate with remote server.
+ *
+ * @author Aliaksandr Yeutushenka
+ */
 @Repository
 public class CommentDaoRestClientImpl extends RestClientAbstract implements CommentDao {
 
