@@ -2,7 +2,7 @@
 <nav th:fragment="header(activeTab)" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar "
      xmlns:th="http://www.thymeleaf.org">
 
-    <a class="navbar-brand" href="#"><strong> Бренд!</strong></a>
+    <a class="navbar-brand" href="#"><img width="80" src="https://mdbootstrap.com/img/logo/mdb-email.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" th:class="${activeTab == 'main'}? 'active' : null ">
-                <a class="nav-link text-uppercase" href="/">Main<span class="sr-only">(current)</span></a>
+                <a class="nav-link text-uppercase" href="/index">Main<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item" th:class="${activeTab == 'blog'}? 'active' : null ">
                 <a class="nav-link text-uppercase" href="/blog">Blog</a>
@@ -18,35 +18,34 @@
         </ul>
         <ul class="nav-bar nav-flex-icons">
             <li class="nav-item form-inline search">
-                <p th:if="${page.isSearch()}">
+                <p th:if="${page.get(search)=='true'}">
                 <div th:replace="~{searchTemplate :: search}"></div>
                 </p>
-                <!--add  th:if="$user.isActive() "-->
-                <div class="nav-item avatar dropdown show" id="#intro-dm">
+                <div th:if="${user.authorize} == true" class="nav-item avatar dropdown show" id="#intro-dm">
                     <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5"
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true">
                         <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"
-                             class="rounded-circle z-depth-0" alt="Изображение аватара">
+                             class="rounded-circle z-depth-0" th:alt="#{header.avatar}">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-secondary view overlay "
                          aria-labelledby="navbarDropdownMenuLink-5">
-                        <a class="dropdown-item waves-effect " href="user/cabinet/statistics"
+                        <a class="dropdown-item waves-effect " href="/user/cabinet/statistics"
                            th:text="#{header.cabinet}"></a>
                         <a class="dropdown-item waves-effect " href="/user/" th:href="@{user.id}"
                            th:text="#{header.account}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/modify"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/modify"
                            th:text="#{header.modify}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/settings"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/settings"
                            th:text="#{header.settings}"></a>
-                        <a class="dropdown-item waves-effect waves-light" href="user/logout"
+                        <a class="dropdown-item waves-effect waves-light" href="/user/logout"
                            th:text="#{header.logout}"></a>
                     </div>
                 </div>
-                <!-- <button th:unless="$user.isActive()" type="button"
-                         class="btn btn-default nav-link waves-effect btn-header-person"
-                         data-toggle="modal" data-target="#loginIn">Войти
-                 </button>-->
+                <button th:unless="${user.authorize} == true" type="button"
+                        class="btn btn-default nav-link waves-effect btn-header-person"
+                        data-toggle="modal" data-target="#loginIn" th:text="#{header.singIn}">
+                </button>
             </li>
         </ul>
     </div>
@@ -62,7 +61,7 @@
             <!--Header-->
             <div class="modal-header primary-color white-text">
                 <h4 class="title">
-                    <i class="fa fa-pencil"></i> Вход</h4>
+                    <i class="fa fa-pencil"></i> <span th:text="#{header.singIn}"></span></h4>
                 <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -73,52 +72,53 @@
                     <!-- Material input email -->
                     <div class="md-form form-sm">
                         <i class="fa fa-envelope prefix"></i>
-                        <input type="email" menuItem="email" id="defaultLoginFormEmail"
+                        <input type="email" name="email" id="defaultLoginFormEmail"
                                class="form-control form-control-sm">
-                        <label for="defaultLoginFormEmail">E-mail</label>
+                        <label for="defaultLoginFormEmail" th:text="#{singIn.email}"></label>
                     </div>
 
                     <!-- Material input password -->
                     <div class="md-form form-sm">
                         <i class="fa fa-tag prefix"></i>
-                        <input type="password" menuItem="password" id="defaultLoginFormPassword"
+                        <input type="password" name="password" id="defaultLoginFormPassword"
                                class="form-control form-control-sm">
-                        <label for="defaultLoginFormPassword">Пароль</label>
+                        <label for="defaultLoginFormPassword" th:text="#{singIn.password}"></label>
                     </div>
                     <div class="d-flex justify-content-around">
                         <div>
                             <!-- Remember me -->
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                                <label class="custom-control-label" for="defaultLoginFormRemember">Запомнить
-                                    меня</label>
+                                <label class="custom-control-label"
+                                       for="defaultLoginFormRemember"
+                                       th:text="#{singIn.rememberMe}"></label>
                             </div>
                         </div>
                         <div>
                             <!-- Forgot password -->
                             <p class="font-small blue-text d-flex justify-content-end">
-                                Забыли <a href="#" class="blue-text ml-1"> Пароль?</a>
+                                <span th:text="#{singIn.forgot}"></span>
+                                <a href="#" class="blue-text ml-1"><span th:text="#{singIn.password}"></span>?</a>
                             </p>
                         </div>
                     </div>
                     <div class="text-center mt-4 mb-2">
-                        <button class="btn btn-info btn-block my-4 btn-header-person" type="submit">Войти</button>
+                        <button class="btn btn-info btn-block my-4 btn-header-person" type="submit"
+                                th:text="#{header.singIn}"></button>
                     </div>
                     <!-- Sign in button -->
 
                     <!-- Register -->
-                    <p>Не зарегистрированны?
-                        <a href="/register">Регистрация</a>
+                    <p><span th:text="#{singIn.notRegistration}"></span>
+                        <a href="/register">
+                            <span th:text="#{singIn.register}"></span>
+                        </a>
                     </p>
-
                     <!-- Social login -->
-                    <p>или можете зайти через:</p>
-
+                    <p th:text="#{singIn.singInForm}"></p>
                     <a class="orange-text mx-2 hoverable sing-icon">
                         <i class="fa fa-facebook  fa-2x"></i>
                     </a>
-
-
                     <a type="" class="orange-text mx-2 hoverable sing-icon">
                         <i class="fa fa-twitter  fa-2x"></i>
                     </a>
