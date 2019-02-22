@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${post.title}"></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/post.css" rel="stylesheet">
+</head>
+
+<body class="grey  lighten-3">
+
+<div class="header" data-toggle="modal" data-target="#centralModalSuccess">
+    <header>
+        <div th:replace="~{header::header(${page.menuItem})}"></div>
+    </header>
+</div>
+<main class=" max-lg-5 ">
+    <div class="container">
+        <div class="row wow fadeIn">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card title-picture text-center mb-4 wow fadeIn img-fluid">
+                        <h1 class="mb-4 white-text mt-5">
+                            <strong th:text="${post.title}"></strong>
+                        </h1>
+                        <a target="_blank" th:href="'/users/' + ${post.authorId}"
+                           class="btn btn-outline-white btn-lg mt-5 waves-effect waves-light">
+                            <span th:text="#{blogPost.allPostOfAuthor}"></span>
+                            <!-- <i class="fa fa-graduation-cap ml-2"></i> -->
+                        </a>
+                    </div>
+                    <div class=" card card-post pl-3 mb-4 pr-3">
+                        <div class="text">
+                            <p class="mt-5">
+                            <div th:replace="~{postFragment::postAuthor(${post})}"></div>
+                            </p>
+                            <hr>
+                            <div th:replace="~{postFragment::postDate(${post.timeOfCreation})}"></div>
+                            <hr>
+                            <div class="lead" th:text="${post.text}"></div>
+                        </div>
+                        <hr>
+                        <div class="tags">
+                            <h5 th:text="#{blogPost.tags}"></h5>
+                            <div th:replace="~{postFragment::postTags(${post.tags})}"></div>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-around">
+                            <div th:replace="~{postFragment::postCommentsCount(${post.commentsCount})}"></div>
+                            <div th:replace="~{postFragment::postViewsCount(${post.viewsCount})}"></div>
+                            <div th:replace="~{postFragment::postLikesCount(${post.likesCount})}"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 wow fadeIn">
+                        <div class="card-header font-weight-bold">
+                            <span th:text="#{blogPost.aboutAuthor}"></span>
+                            <span class="pull-right">
+                                    <a href="">
+                                        <i class="fa fa-facebook mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-twitter mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-instagram mr-2"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-linkedin mr-2"></i>
+                                    </a>
+                                </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="media d-block d-md-flex mt-3">
+                                <a th:href="'/users/' + ${post.authorId}">
+                                    <img class="d-flex mb-3 mx-auto z-depth-1"
+                                         src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
+                                         alt="Generic placeholder image"
+                                         style="width: 100px;">
+                                </a>
+                                <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                    <h5 class="mt-0 font-weight-bold">
+                                        <div th:replace="~{postFragment::postAuthor(${post})}"></div>
+                                    </h5>
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+                                    praesentium voluptatum deleniti atque corrupti
+                                    quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+                                    similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et
+                                    dolorum
+                                    fuga.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="pagination_replace mb-4"></div>
+                        <div id="comment_replace"></div>
+                        <div class="pagination_replace mb-4"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 wow fadeIn">
+                        <div class="card-header" th:text="#{blogPost.similarPosts}"></div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="media">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder7.jpg"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                                <li class="media my-4">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder6.jpg"
+                                         alt="An image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                                <li class="media">
+                                    <img class="d-flex mr-3"
+                                         src="https://mdbootstrap.com/img/Photos/Others/placeholder5.jpg"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <a href="">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                                        </a>
+                                        Cras sit amet nibh libero, in gravida nulla (...)
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="modal"></div>
+<div th:unless="${user.authorize} == true" th:replace="~{header::modelSingIn}"></div>
+<div th:replace="~{footerFragment::footer}"></div>
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="/static/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="/static/mdb.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        //call function when page is loaded
+        var page = 1;
+        var size = 10;
+
+        loadComments(page, size);
+
+
+        $(document).on("click", ".pagination-ajax li a", function (event) {
+            event.preventDefault();
+            page = $(this).data("pagination-page");
+            loadComments(page, size);
+        });
+
+        $(document).on("click", ".counter li a", function () {
+            event.preventDefault();
+            page = $(this).data("pagination-page");
+            size = $(this).data("pagination-size");
+            loadComments(page, size);
+        });
+
+        $(document).on("click", "#send_comment", function (event) {
+            event.preventDefault();
+            sendNewComment('result_form', 'new_comment');
+            return false;
+        });
+        $(document).on("click", "#send_update_comment", function (event) {
+            event.preventDefault();
+            updateComment('result_form', 'update_comment');
+            return false;
+        });
+        $(document).on("click", ".dropdown-menu .edit-comment", function (event) {
+            event.preventDefault();
+            let id = $(this).data("comment-edit-id");
+            getFormForUpdate(id);
+        });
+        $(document).on("click", ".dropdown-menu .delete-comment", function (event) {
+            event.preventDefault();
+            let id = $(this).data("comment-deleted-id");
+            deleteComment(id);
+        });
+
+        function loadComments(page, size) {
+            /*<![CDATA[*/
+            // for List comments
+            $.ajax({
+                url: "/comments/post/" + [[${post.id}]],
+                type: "GET",
+                data: {
+                    page: page,
+                    size: size
+                },
+                success: function (data) {
+                    if (data !== null) {
+                        $('#comment_replace').html(data);
+                    }
+                },
+                error: function (jqXHR, testStatus, errorThrown) {
+                    this.alert(errorThrown);
+                }
+
+            });
+            // for pagination panel
+            $.ajax({
+                url: "/comments/post/" + [[${post.id}]] + "/pagination",
+                type: "GET",
+                data: {
+                    page: page,
+                    size: size
+                },
+                success: function (data) {
+                    if (data !== null) {
+                        $('.pagination_replace').html(data);
+                    }
+                },
+                error: function (jqXHR, testStatus, errorThrown) {
+                    this.alert(errorThrown);
+                }
+            });
+            /*]]>*/
+        }
+
+        function sendNewComment(result_form, ajax_form) {
+            /*<![CDATA[*/
+            $.ajax({
+                url: "/comments/post/",
+                type: "POST",
+                dataType: "html",
+                data: $("#" + ajax_form).serialize(),
+                success: function (data) {
+                    $('#modal').html(data);
+                    $('#centralModalSuccess').modal();
+                    loadComments(page, size);
+                },
+                error: function (response) {
+                }
+            });
+            /*]]>*/
+
+        }
+
+        function deleteComment(id) {
+            $.ajax({
+                url: "/comments/post/" + [[${post.id}]] + "/" + id,
+                type: "DELETE",
+                data: {},
+                success: function (data) {
+                    if (data !== null) {
+                        loadComments(page, size);
+                    }
+                },
+                error: function (jqXHR, testStatus, errorThrown) {
+                }
+
+            });
+        }
+
+        function getFormForUpdate(id) {
+            $.ajax({
+                url: "/comments/" + id,
+                type: "GET",
+                data: {},
+                success: function (data) {
+                    if (data !== null) {
+                        $('#modal').html(data);
+                        $('#modalUpdateForm').modal();
+                    }
+                },
+                error: function (jqXHR, testStatus, errorThrown) {
+                }
+
+            });
+        }
+
+        function updateComment(result_form, ajax_form) {
+            /*<![CDATA[*/
+            $('#modalUpdateForm').modal('hide');
+
+            $.ajax({
+                url: "/comments/post",
+                type: "PUT",
+                dataType: "html",
+                data: $("#" + ajax_form).serialize(),
+                success: function (data) {
+                    loadComments(page, size);
+                },
+                error: function (response) {
+                }
+            });
+            /*]]>*/
+
+        }
+
+    });
+</script>
+
+<!-- <script src="https://vincentgarreau.com/particles.js/particles.js"></script>
+<script src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'></script>
+  <script type="text/javascript" src="js/index.js"></script> -->
+</body>
+
+</html>
