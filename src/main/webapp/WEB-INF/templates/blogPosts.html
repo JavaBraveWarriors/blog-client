@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:text="${page.title}"></title>
+    <title th:text="#{blogPosts.title}"></title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
-    <link href="static/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
-    <link href="static/mdb.min.css" rel="stylesheet">
+    <link href="/static/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
-    <link href="static/style.css" rel="stylesheet">
-    <link href="static/category.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/category.css" rel="stylesheet">
 
 </head>
 
@@ -21,90 +21,33 @@
 
 <div class="header">
     <header>
-        <div th:replace="~{header::header(${page.menuItem})}"></div>
+        <div th:replace="~{header::header(${page.get(menuItem)})}"></div>
         <div class="sidebar-fixed position-fixed ">
-
             <div class="list-group list-group-flush">
-
                 <div class="list-group-item form-inline">
                     <!--TODO: filtering-->
                 </div>
             </div>
         </div>
     </header>
-
 </div>
 <main class=" max-lg-5 ">
-    <div class="container">
-        <div class="row wow fadeIn">
-            <section class="wow fadeIn" style="visibility: visible; name: fadeIn;">
-                <!--Grid row-->
-                <div class="row articles">
-                    <div class="card  col-xl-12 small">
-                        <form class="md-form inline row" method="get">
-                            <div class="col-xl-1 ">
-                                <label for="pagesSize" class="pl-2" th:text="#{blogPosts.showSizePages}"></label>
-                            </div>
-                            <div class="col-xl-3 mt-xl-2">
-                                <div th:replace="~{pager::countPages(${pagination})}" id="pagesSize"></div>
-                            </div>
-                            <div class="col-xl-2 offset-xl-3">
-                                <label for="sort" class="pl-5" th:text="#{blogPosts.sortedBy}"></label>
-                            </div>
-                            <input type="hidden" name="page" th:value="${pagination.currentPage}">
-                            <input type="hidden" name="size" th:value="${pagination.size}">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <select class="custom-select custom-select-lg" name='sort' id="sort">
-                                        <option th:selected="${page.sort == null}? 'selected' : null "
-                                                th:text="#{blogPosts.selectSort}">
-                                        </option>
-                                        <option th:selected="${page.sort == 'created_date'}? 'selected' : null "
-                                                value="created_date" th:text="#{blogPosts.selectSortByDate}">
-                                        </option>
-                                        <option th:selected="${page.sort == 'views'}? 'selected' : null "
-                                                value="views" th:text="#{blogPosts.selectSortByViews}">
-                                        </option>
-                                        <option th:selected="${page.sort == 'comments_count'}? 'selected' : null "
-                                                value="comments_count" th:text="#{blogPosts.selectSortByComments}">
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="mt-2 col-xl-12">
-                        <div th:replace="~{pager::pager(${pagination})}"></div>
-                    </div>
-                    <div th:each="post : ${posts}" class="col-xl-4 col-md-12 mb-4">
-                        <!--Card-->
-                        <div class="card-deck mt-1">
-                            <div th:replace="~{postFragment::post(${post})}"></div>
-                        </div>
-                        <!--/.Card-->
-                    </div>
-                    <div class="mt-2 col-xl-12">
-                        <div th:replace="~{pager::pager(${pagination})}"></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
+    <div th:replace="~{postFragment::postsLayout(${posts}, ${pagination}, ${page})}"></div>
 </main>
+<div th:unless="${user.authorize} == true" th:replace="~{header::modelSingIn}"></div>
 
 <div th:replace="~{footerFragment::footer}"></div>
 
 
 <!-- SCRIPTS -->
 <!-- JQuery -->
-<script type="text/javascript" src="static/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
 <!-- Bootstrap tooltips -->
-<script type="text/javascript" src="static/popper.min.js"></script>
+<script type="text/javascript" src="/static/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="static/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
-<script type="text/javascript" src="static/mdb.min.js"></script>
+<script type="text/javascript" src="/static/mdb.min.js"></script>
 
 <script type="text/javascript">
 
