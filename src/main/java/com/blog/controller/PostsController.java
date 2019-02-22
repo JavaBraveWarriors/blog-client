@@ -61,6 +61,21 @@ public class PostsController {
         return "blogPosts";
     }
 
+    @GetMapping("/{id}")
+    public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
+
+        ResponsePostDto post = postDao.getPostById(id);
+
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
+
+        setActiveUserInModelAttribute(model);
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+
+        return "blogPost";
+    }
+
     @GetMapping("/new")
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
