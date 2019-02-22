@@ -1,0 +1,70 @@
+<!-- Central Modal Medium Success -->
+<div th:fragment="success" class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-dialog modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa fa-check fa-4x mb-3 animated rotateIn" style="color: #00c759;"></i>
+                    <p th:text="${message}"></p>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-success waves-effect waves-light" data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<div th:fragment="update" class="modal fade" id="modalUpdateForm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="needs-validation" th:object="${comment}" novalidate id="update_comment">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold" th:text="#{modal.update}"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+
+                    <div class="form-group shadow-textarea mt-4 col-xl-12">
+                        <label for="quickReplyFormComment"></label>
+                        <textarea
+                                th:field="*{text}"
+                                class="form-control z-depth-1"
+                                id="quickReplyFormComment"
+                                rows="5"
+                                required></textarea>
+                        <div class="invalid-feedback">
+                            <small style="font-size:0.8rem" th:text="#{comment.textInvalidMessage}"></small>
+                        </div>
+                        <!--TODO: refactored when will added security.-->
+                        <input type="hidden" th:attr="name='authorId'" th:value="1">
+                        <input type="hidden" th:attr="name='id'" th:value="*{id}">
+                        <input type="hidden" th:attr="name='postId'" th:value="*{postId}">
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" id="send_update_comment" type="submit"
+                            th:text="#{modal.send}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
