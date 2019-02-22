@@ -1,0 +1,72 @@
+<div class="card card-comments mb-4 wow fadeIn" style="visibility: visible; animation-name: fadeIn;"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="card-header font-weight-bold">[[${countComments}]] <span th:text="#{comments.comments}"></span></div>
+    <div class="card-body container-fluid">
+        <div th:each="comment : ${comments}" class="media d-block d-md-flex mt-4 col-xl-12">
+            <a th:href="'/users/' + ${comment.authorId}">
+                <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
+                     th:alt="#{comment.image}">
+            </a>
+            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                <a th:href="'/users/' + ${comment.authorId}">
+                    <h5 class="mt-0 mb-0 font-weight-bold">
+                        <span th:text="${comment.authorFirstName} + | | + ${comment.authorLastName}"></span>
+                    </h5>
+                </a>
+                <div th:if="${user.authorize} != false and ${comment.authorId} == ${user.id}"
+                     class="dropdown">
+                    <i class="fa fa-cogs dropdown-toggle waves-effect waves-light pull-right"
+                       th:id="|commentSettings| + ${comment.id}"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"></i>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-secondary view overlay "
+                         th:aria-labelledby="|commentSettings| + ${comment.id}">
+                        <a th:if="${comment.authorId} == ${user.id}"
+                           th:href="|#/| + ${comment.id}"
+                           class="dropdown-item waves-effect edit-comment"
+                           th:data-comment-edit-id="${comment.id}">
+                            <span th:text="#{comment.edit}"></span>
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a th:href="|#/| + ${comment.id}"
+                           th:data-comment-deleted-id="${comment.id}"
+                           class="dropdown-item waves-effect delete-comment">
+                            <span th:text="#{comment.delete}"></span>
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <strong th:with="df=#{date.format}" class="mt-0"><i class="fa fa-clock-o"></i>
+                    <span th:text="${#temporals.format(comment.timeOfCreation, df)}"></span>
+                </strong>
+                <div th:text="${comment.text}"></div>
+            </div>
+        </div>
+        <!-- Quick Reply -->
+        <form class="needs-validation" th:object="${comment}" novalidate id="new_comment">
+            <div class="form-group shadow-textarea mt-4 col-xl-12">
+                <label for="quickReplyFormComment" th:text="#{modal.yourComment}"></label>
+                <textarea
+                        th:field="*{text}"
+                        class="form-control z-depth-1"
+                        id="quickReplyFormComment"
+                        rows="5"
+                        required></textarea>
+                <div class="invalid-feedback">
+                    <small style="font-size:0.8rem" th:text="#{comment.textInvalidMessage}"></small>
+                </div>
+                <!--TODO: refactored when will added security.-->
+                <input type="hidden" th:attr="name='authorId'" th:value="1">
+                <input type="hidden" th:attr="name='postId'" th:value="${postId}">
+
+                <div class="text-center">
+                    <button class="btn btn-info btn-sm waves-effect waves-light"
+                            id="send_comment"
+                            type="submit"
+                            th:text="#{comment.submit}">
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

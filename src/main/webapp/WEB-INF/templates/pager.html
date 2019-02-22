@@ -29,8 +29,6 @@
                th:text="#{pager.next}"></a>
         </li>
     </ul>
-
-
 </nav>
 <nav th:fragment="countPages(pagination)" id="pagesSize" aria-label="Page navigation"
      xmlns:th="http://www.thymeleaf.org">
@@ -42,9 +40,66 @@
                 <span class="sr-only">(current)</span>
             </a>
             <a th:th:unless="${count} == ${pagination.size}"
-               th:href="@{posts(size=${count},page=1)}"
+               th:href="@{${url}(size=${count},page=1)}"
                class="page-link" th:text="${count}">
             </a>
         </li>
     </ul>
 </nav>
+
+<div th:fragment="commentsNavBar(pagination)" class="card container-fluid" xmlns:th="http://www.thymeleaf.org">
+    <div class="row mt-3">
+        <nav class="d-inline-block col-xl-4">
+            <ul class="pagination counter " th:with="counts = ${ {10, 25, 50} }">
+                <li th:each="count : ${counts}" class="page-item"
+                    th:classappend="${count} == ${pagination.size}? active">
+                    <a th:if="${count} == ${pagination.size}"
+                       href="#"
+                       class="page-link" th:text="${count}">
+                        <span class="sr-only">(current)</span>
+                    </a>
+                    <a th:th:unless="${count} == ${pagination.size}"
+                       th:data-pagination-size="${count}"
+                       th:data-pagination-page="1"
+                       th:href="|#/| + ${count}"
+                       class="page-link" th:text="${count}">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="d-inline-block col-xl-8 ">
+            <ul class="pagination pagination-ajax pg-blue justify-content-end">
+                <li class="page-item" th:classappend="${pagination.currentPage} == 1 ? disabled">
+                    <a class="page-link" tabindex="-1"
+                       th:href="|#/| + (${pagination.currentPage} - 1)"
+                       th:data-pagination-page="${pagination.currentPage} - 1"
+                       th:text="#{pager.previous}"></a>
+                </li>
+                <li th:each="p : ${pagination.createPaginationArray()}" class="page-item"
+                    th:classappend="${p} == ${pagination.currentPage} ? active">
+                    <a th:if="${p} == ${pagination.currentPage}"
+                       href="#"
+                       class="page-link" th:text="${p}">
+                        <span class="sr-only">(current)</span>
+                    </a>
+                    <a th:if="${p} == -1"
+                       href="#"
+                       class="page-link disabled">...</a>
+                    <a th:th:unless="${p} == ${pagination.currentPage}"
+                       th:if="${p} != -1"
+                       th:data-pagination-page="${p}"
+                       th:href="|#/| + ${p}"
+                       class="page-link" th:text="${p}">
+                    </a>
+                </li>
+                <li class="page-item"
+                    th:classappend="${pagination.totalPages} == ${pagination.currentPage} ? disabled : (${pagination.totalPages} == 0 ? disabled:'')">
+                    <a class="page-link" tabindex="+1"
+                       th:href="|#/| + ${pagination.currentPage + 1}"
+                       th:data-pagination-page="${pagination.currentPage + 1}"
+                       th:text="#{pager.next}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
