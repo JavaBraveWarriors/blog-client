@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<div th:fragment="tag(tag)" class="card shadow card-image" style="background-image: url();"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="text-white category justify-content-center text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+        <div>
+            <h3 class="card-title pt-2"><strong th:text="${tag.title}"></strong></h3>
+            <a class="btn btn-pink" href="" th:href="@{blog/posts(tag=${tag.id})}"><i
+                    class="fa fa-clone left"></i> <span th:text="#{tag.readAll}"></span></a>
+        </div>
+    </div>
+</div>
