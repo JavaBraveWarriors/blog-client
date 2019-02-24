@@ -76,6 +76,44 @@ public class PostsController {
         return "blogPost";
     }
 
+    @GetMapping("/{postId}/update")
+    public String getPageForUpdatePost(
+            Model model,
+            @PathVariable(value = "postId") Long postId) {
+        List<Tag> tags = tagService.getAllTags();
+
+        ResponsePostDto post = postDao.getPostById(postId);
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
+
+        currentPage.put("title", "update");
+
+        setActiveUserInModelAttribute(model);
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+        model.addAttribute("title", "");
+        model.addAttribute("allTags", tags);
+        return "formPost";
+    }
+
+    @PostMapping("/{postId}/update")
+    public String updatePost(
+            Model model,
+            @PathVariable(value = "postId") Long postId,
+            @ModelAttribute RequestPostDto post) {
+
+        postDao.updatePost(post);
+
+        Map<String, String> currentPage = pageService.getPageDefaultParams();
+
+        setActiveUserInModelAttribute(model);
+
+        model.addAttribute("post", post);
+        model.addAttribute("page", currentPage);
+        model.addAttribute("title", "");
+        return "redirect:/blog/posts/" + postId;
+    }
+
     @GetMapping("/new")
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
