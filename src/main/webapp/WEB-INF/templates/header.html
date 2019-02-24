@@ -18,6 +18,15 @@
         </ul>
         <ul class="nav-bar nav-flex-icons">
             <li class="nav-item form-inline search">
+                <div th:if="${user.authorize} == true">
+                    <button type="button" class="btn cyan-text nav-link waves-effect waves-light"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
+                            th:title="#{header.addTag}"
+                            id="add_tag">
+                        <i class="fa fa-2x fa-plus-circle"></i>
+                    </button>
+                </div>
                 <p th:if="${page.get(search)=='true'}">
                 <div th:replace="~{searchTemplate :: search}"></div>
                 </p>

@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -17,18 +20,18 @@ import java.util.Map;
 @RequestMapping("/blog")
 public class TagController {
 
-    private TagDao tagService;
+    private TagDao tagDao;
     private PageService pageService;
 
     @Autowired
-    public TagController(PageService pageService, TagDao tagService) {
-        this.tagService = tagService;
+    public TagController(PageService pageService, TagDao tagDao) {
+        this.tagDao = tagDao;
         this.pageService = pageService;
     }
 
     @GetMapping("")
     public String categories(Model model) {
-        List<Tag> tags = tagService.getAllTags();
+        List<Tag> tags = tagDao.getAllTags();
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");
 
@@ -36,6 +39,33 @@ public class TagController {
         model.addAttribute("tags", tags);
         model.addAttribute("page", page);
         return "blogCategories";
+    }
+
+    @GetMapping("/tags/add")
+    public String getModalForAddTag(Model model) {
+        Tag tag = new Tag();
+        Map<String, String> page = pageService.getPageDefaultParams();
+        page.put("title", "add");
+        model.addAttribute("tag", tag);
+        model.addAttribute("page", page);
+        return "modals::addTag";
+    }
+
+    @GetMapping("/tags/{id}/update")
+    public String getModalForUpdateTag(Model model, @PathVariable(value = "id") Long id) {
+        Tag tag = tagDao.getTagById(id);
+
+        Map<String, String> page = pageService.getPageDefaultParams();
+        page.put("title", "update");
+        model.addAttribute("tag", tag);
+        model.addAttribute("page", page);
+        return "modals::addTag";
+    }
+
+    @PostMapping("/tags/add")
+    public String addTag(@Valid Tag tag) {
+        tagDao.addTag(tag);
+        return "modals::success";
     }
 
     //TODO: refactor this when will be security. UserId must back from rest-api with every request.
