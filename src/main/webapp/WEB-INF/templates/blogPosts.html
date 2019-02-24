@@ -37,17 +37,9 @@
 <div th:unless="${user.authorize} == true" th:replace="~{header::modelSingIn}"></div>
 
 <div th:replace="~{footerFragment::footer}"></div>
+<div id="modal"></div>
 
-
-<!-- SCRIPTS -->
-<!-- JQuery -->
-<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="/static/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="/static/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="/static/mdb.min.js"></script>
+<div th:replace="~{imports::js}"></div>
 
 <script type="text/javascript">
 

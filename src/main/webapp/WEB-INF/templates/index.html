@@ -20,15 +20,8 @@
 <div th:replace="~{header::header}"></div>
 <h1 th:text="#{greeting}"></h1>
 
-<!-- SCRIPTS -->
-<!-- JQuery -->
-<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="/static/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="/static/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="/static/mdb.js"></script>
+<div id="modal"></div>
+<div th:replace="~{imports::js}"></div>
 </body>
 
 </html>
