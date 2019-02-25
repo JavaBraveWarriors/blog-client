@@ -71,7 +71,7 @@ public class TagController {
         return "modals::success";
     }
 
-    @DeleteMapping("blog/tags/{id}")
+    @DeleteMapping("/tags/{id}")
     public String deleteTag(Model model, @PathVariable(value = "id") Long tagId) {
         tagDao.deleteTag(tagId);
         return "modals::success";

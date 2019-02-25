@@ -72,14 +72,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body mx-3">
+                <div class="modal-body form-group row mx-3">
                     <input th:if="${page.get('title')} == 'update'" type="hidden" th:attr="name='id'"
                            th:value="${tag.id}">
                     <div class="md-form mb-5">
                         <i class="fa fa-envelope prefix grey-text"></i>
-                        <input type="text" id="defaultForm-tag" th:field="*{title}" class="form-control validate">
-                        <label data-error="wrong" data-success="right" for="defaultForm-tag"
-                               th:text="#{model.tagName}"></label>
+                        <input type="text" id="title-tag" th:field="*{title}" class="form-control" required>
+                        <label for="title-tag" th:text="#{model.tagName}"></label>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -107,7 +106,7 @@
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center">
-                <a href="" id="modal-btn-si" class="btn btn-outline-danger" th:text="#{modal.dangerConfirm.yes}"></a>
+                <a id="modal-btn-si" class="btn btn-outline-danger" th:text="#{modal.dangerConfirm.yes}"></a>
                 <a type="button" id="modal-btn-no" class="btn  btn-danger waves-effect" data-dismiss="modal" th:text="#{modal.dangerConfirm.no}"></a>
             </div>
         </div>
