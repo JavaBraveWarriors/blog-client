@@ -4,15 +4,11 @@
     <meta charset="utf-8">
     <meta menuItem="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:text="#{categories.title}"></title>
-    <!-- Font Awesome -->
+    <title th:text="#{categories.title}"></title> <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
-    <link href="/static/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link href="/static/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
-
+    <link href="/static/bootstrap.min.css" rel="stylesheet"> <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet"> <!-- Your custom styles (optional) -->
     <link href="/static/style.css" rel="stylesheet">
     <link href="/static/blog.css" rel="stylesheet">
     <link href="/static/user.css" rel="stylesheet">
@@ -38,109 +34,9 @@
 </main>
 <div id="modal"></div>
 <div th:replace="~{modals::dangerModal}"></div>
-<div th:replace="~{footerFragment::footer}"></div>
-
-
-<!-- when will be authorization -->
+<div th:replace="~{footerFragment::footer}"></div> <!-- when will be authorization -->
 <!--<div th:replace="~{header::modelSingIn}" th:if="${user.isActive()==false}"></div>-->
-
 <div th:replace="~{imports::js}"></div>
-<script>
-    $(document).on('click', ".manage-tag", function (e) {
-        e.preventDefault();
-        let id = $(this).data("menu");
-        $(this).toggleClass('menu-btn_active');
-        $('#menu_' + id).toggleClass('menu_active');
-    });
-    $(document).on("click", ".menu-block .manage .edit", function (event) {
-        event.preventDefault();
-        let id = $(this).data("tag-update-id");
-        getFormForUpdateTag(id);
-    });
-    $(document).on("click", ".menu-block .manage .delete", function (event) {
-        event.preventDefault();
-        let id = $(this).data("tag-delete-id");
-        $('#dangerModal').modal();
-
-        var modalConfirm = function (callback) {
-
-            $("#btn-confirm").on("click", function () {
-                $("#dangerModal").modal('show');
-            });
-
-            $("#modal-btn-si").on("click", function () {
-                callback(true);
-                $("#dangerModal").modal('hide');
-            });
-
-            $("#modal-btn-no").on("click", function () {
-                callback(false);
-                $("#dangerModal").modal('hide');
-            });
-        };
-        modalConfirm(function (confirm) {
-            if (confirm) {
-                deleteTag(id);
-            }
-        });
-    });
-
-    $(document).on("click", "#send_tag", function () {
-        event.preventDefault();
-        updateTag('result_form', 'tag')
-    });
-
-    function deleteTag(id) {
-        $.ajax({
-            url: "/blog/tags/" + id,
-            type: "DELETE",
-            dataType: "html",
-            success: function (data) {
-                $('#modal').html(data);
-                $('#centralModalSuccess').modal();
-            },
-            error: function (response) {
-            }
-        });
-    }
-
-    function updateTag(result_form, ajax_form) {
-        $.ajax({
-            url: "/blog/tags/" + $("input[name='id']").val() + "/update",
-            type: "PUT",
-            dataType: "html",
-            data: $("#" + ajax_form).serialize(),
-            success: function (data) {
-                $('#modalTagForm').modal('toggle');
-
-                $('#modalTagForm').on('hidden.bs.modal', function () {
-                    $('#modal').html(data);
-                    $('#centralModalSuccess').modal();
-                });
-            },
-            error: function (response) {
-            }
-        });
-    }
-
-    function getFormForUpdateTag(id) {
-        $.ajax({
-            url: "/blog/tags/" + id + "/update",
-            type: "GET",
-            success: function (data) {
-                if (data !== null) {
-                    $('#modal').html(data);
-                    $('#modalTagForm').modal();
-                }
-            },
-            error: function (jqXHR, testStatus, errorThrown) {
-                alert(errorThrown);
-            }
-
-        });
-    }
-
-
-</script>
+<script type="text/javascript" src="/static/tag.js"></script>
 </body>
 </html>
