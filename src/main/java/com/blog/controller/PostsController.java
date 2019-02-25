@@ -52,8 +52,7 @@ public class PostsController {
         Map<String, String> currentPage = pageService.getPageDefaultParams();
         currentPage.put("sort", sort);
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("posts", posts.getPosts());
         model.addAttribute("page", currentPage);
         model.addAttribute("pagination", pagination);
@@ -68,8 +67,7 @@ public class PostsController {
 
         Map<String, String> currentPage = pageService.getPageDefaultParams();
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
 
@@ -87,8 +85,7 @@ public class PostsController {
 
         currentPage.put("title", "update");
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
         model.addAttribute("title", "");
@@ -106,8 +103,7 @@ public class PostsController {
 
         Map<String, String> currentPage = pageService.getPageDefaultParams();
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("post", post);
         model.addAttribute("page", currentPage);
         model.addAttribute("title", "");
@@ -124,8 +120,7 @@ public class PostsController {
 
         currentPage.put("title", "add");
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("post", post);
         model.addAttribute("title", "");
         model.addAttribute("allTags", tags);
@@ -140,11 +135,11 @@ public class PostsController {
     }
 
     //TODO: refactor this when will be security. UserId must back from rest-api with every request.
-    private void setActiveUserInModelAttribute(Model model) {
+    private ActiveUser getActiveUser() {
         ActiveUser user = new ActiveUser();
         user.setAuthorize(true);
         user.setId(1L);
 
-        model.addAttribute("user", user);
+        return user;
     }
 }

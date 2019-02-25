@@ -32,19 +32,18 @@ public class TagController {
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("tags", tags);
         model.addAttribute("page", page);
         return "blogCategories";
     }
 
     //TODO: refactor this when will be security. UserId must back from rest-api with every request.
-    private void setActiveUserInModelAttribute(Model model) {
+    private ActiveUser getActiveUser() {
         ActiveUser user = new ActiveUser();
         user.setAuthorize(true);
         user.setId(1L);
 
-        model.addAttribute("user", user);
+        return user;
     }
 }
