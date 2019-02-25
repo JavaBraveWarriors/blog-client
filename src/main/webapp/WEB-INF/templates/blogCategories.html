@@ -68,9 +68,8 @@
     });
 
     function updateTag(result_form, ajax_form) {
-        alert($("#" + ajax_form).getAll());
         $.ajax({
-            url: "/blog/tags/" + ajax_form.id + "/update",
+            url: "/blog/tags/" + $("input[name='id']").val() + "/update",
             type: "PUT",
             dataType: "html",
             data: $("#" + ajax_form).serialize(),

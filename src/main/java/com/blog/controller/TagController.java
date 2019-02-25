@@ -7,10 +7,7 @@ import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -60,6 +57,12 @@ public class TagController {
         model.addAttribute("tag", tag);
         model.addAttribute("page", page);
         return "modals::addTag";
+    }
+
+    @PutMapping("/tags/{id}/update")
+    public String updateTag(@Valid Tag tag){
+        tagDao.updateTag(tag);
+        return "modals::success";
     }
 
     @PostMapping("/tags/add")
