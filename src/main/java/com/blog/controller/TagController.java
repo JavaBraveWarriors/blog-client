@@ -60,7 +60,7 @@ public class TagController {
     }
 
     @PutMapping("/tags/{id}/update")
-    public String updateTag(@Valid Tag tag){
+    public String updateTag(@Valid Tag tag) {
         tagDao.updateTag(tag);
         return "modals::success";
     }
@@ -68,6 +68,12 @@ public class TagController {
     @PostMapping("/tags/add")
     public String addTag(@Valid Tag tag) {
         tagDao.addTag(tag);
+        return "modals::success";
+    }
+
+    @DeleteMapping("blog/tags/{id}")
+    public String deleteTag(Model model, @PathVariable(value = "id") Long tagId) {
+        tagDao.deleteTag(tagId);
         return "modals::success";
     }
 

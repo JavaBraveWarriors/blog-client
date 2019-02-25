@@ -90,3 +90,27 @@
         </div>
     </div>
 </div>
+
+<div th:fragment="dangerModal" class="modal fade" id="dangerModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading" th:text="#{modal.dangerConfirm.title}"></p>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <i class="fa fa-times fa-4x animated rotateIn"></i>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <a href="" id="modal-btn-si" class="btn btn-outline-danger" th:text="#{modal.dangerConfirm.yes}"></a>
+                <a type="button" id="modal-btn-no" class="btn  btn-danger waves-effect" data-dismiss="modal" th:text="#{modal.dangerConfirm.no}"></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
