@@ -39,4 +39,10 @@ public interface TagDao {
      * @param tag {Tag} to be added.
      */
     void updateTag(final Tag tag);
+
+    /**
+     * Delete tag by id
+     * @param tagId {Long} value the ID of the tag you want to delete tag.
+     */
+    void deleteTag(Long tagId);
 }

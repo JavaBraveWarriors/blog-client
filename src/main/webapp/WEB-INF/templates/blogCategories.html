@@ -37,7 +37,7 @@
     </div>
 </main>
 <div id="modal"></div>
-
+<div th:replace="~{modals::dangerModal}"></div>
 <div th:replace="~{footerFragment::footer}"></div>
 
 
@@ -60,12 +60,49 @@
     $(document).on("click", ".menu-block .manage .delete", function (event) {
         event.preventDefault();
         let id = $(this).data("tag-delete-id");
-        deleteTag(id);
+        $('#dangerModal').modal();
+
+        var modalConfirm = function (callback) {
+
+            $("#btn-confirm").on("click", function () {
+                $("#dangerModal").modal('show');
+            });
+
+            $("#modal-btn-si").on("click", function () {
+                callback(true);
+                $("#dangerModal").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function () {
+                callback(false);
+                $("#dangerModal").modal('hide');
+            });
+        };
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                deleteTag(id);
+            }
+        });
     });
+
     $(document).on("click", "#send_tag", function () {
         event.preventDefault();
         updateTag('result_form', 'tag')
     });
+
+    function deleteTag(id) {
+        $.ajax({
+            url: "/blog/tags/" + id,
+            type: "DELETE",
+            dataType: "html",
+            success: function (data) {
+                $('#modal').html(data);
+                $('#centralModalSuccess').modal();
+            },
+            error: function (response) {
+            }
+        });
+    }
 
     function updateTag(result_form, ajax_form) {
         $.ajax({

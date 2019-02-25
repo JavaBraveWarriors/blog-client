@@ -87,4 +87,17 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
                 String.class
         );
     }
+
+    public void deleteTag(Long tagId) {
+        LOGGER.debug("Delete tag by id = [{}].", tagId);
+
+        entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                createURLWithEndpoint(endpoint.concat(SLASH).concat(tagId.toString())),
+                HttpMethod.DELETE,
+                entity,
+                String.class
+        );
+    }
 }
