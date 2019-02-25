@@ -34,8 +34,7 @@ public class CommentController {
             @PathVariable(value = "postId") Long postId) {
         CommentListWrapper commentListWrapper = commentDao.getListOfCommentsByPostId(page, size, postId);
 
-        setActiveUserInModelAttribute(model);
-
+        model.addAttribute("user", getActiveUser());
         model.addAttribute("comment", new Comment());
         model.addAttribute("postId", postId);
         model.addAttribute("comments", commentListWrapper.getCommentsPage());
@@ -100,11 +99,11 @@ public class CommentController {
     }
 
     //TODO: refactor this when will be security. UserId must back from rest-api with every request.
-    private void setActiveUserInModelAttribute(Model model) {
+    private ActiveUser getActiveUser() {
         ActiveUser user = new ActiveUser();
         user.setAuthorize(true);
         user.setId(1L);
 
-        model.addAttribute("user", user);
+        return user;
     }
 }
