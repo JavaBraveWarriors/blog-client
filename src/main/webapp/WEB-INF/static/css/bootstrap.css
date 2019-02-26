@@ -2301,6 +2301,7 @@ textarea.form-control {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
   -ms-flex-align: center;
   align-items: center;
 }
