@@ -7,6 +7,8 @@ import com.blog.model.CommentListWrapper;
 import com.blog.model.Pagination;
 import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,14 @@ import javax.validation.Valid;
 @RequestMapping("/comments")
 public class CommentController {
 
+    private MessageSource messageSource;
+
     private CommentDao commentDao;
     private PageService pageService;
 
     @Autowired
-    public CommentController(CommentDao commentDao, PageService pageService) {
+    public CommentController(MessageSource messageSource, CommentDao commentDao, PageService pageService) {
+        this.messageSource = messageSource;
         this.commentDao = commentDao;
         this.pageService = pageService;
     }
@@ -92,8 +97,8 @@ public class CommentController {
     public String updateComment(
             Model model, @Valid Comment comment) {
         commentDao.updateComment(comment);
-
-        model.addAttribute("comment", comment);
+        // TODO: added this message to properties.
+        model.addAttribute("message", messageSource.getMessage("modal.success.updateComment", null, LocaleContextHolder.getLocale()));
 
         return "modals::success";
     }
