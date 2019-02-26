@@ -5,6 +5,8 @@ import com.blog.model.ActiveUser;
 import com.blog.model.Tag;
 import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,16 @@ import java.util.Map;
 @RequestMapping("/blog")
 public class TagController {
 
+    private MessageSource messageSource;
+
     private TagDao tagDao;
     private PageService pageService;
 
     @Autowired
-    public TagController(PageService pageService, TagDao tagDao) {
+    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource) {
         this.tagDao = tagDao;
         this.pageService = pageService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("")
@@ -60,14 +65,20 @@ public class TagController {
     }
 
     @PutMapping("/tags/{id}/update")
-    public String updateTag(@Valid Tag tag) {
+    public String updateTag(@Valid Tag tag, Model model) {
         tagDao.updateTag(tag);
+
+        model.addAttribute("message",
+                messageSource.getMessage("modal.success.updateTag", null, LocaleContextHolder.getLocale()));
+
         return "modals::success";
     }
 
     @PostMapping("/tags/add")
-    public String addTag(@Valid Tag tag) {
+    public String addTag(@Valid Tag tag, Model model) {
         tagDao.addTag(tag);
+        model.addAttribute("message",
+                messageSource.getMessage("modal.success.addTag", null, LocaleContextHolder.getLocale()));
         return "modals::success";
     }
 

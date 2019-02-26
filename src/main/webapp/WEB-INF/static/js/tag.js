@@ -2,12 +2,13 @@
 $(document).on("click", "#add_tag", function () {
     event.preventDefault();
     loadModal();
+    // send new tag to server
+    $(document).on("click", "#send_tag", function () {
+        event.preventDefault();
+        sendTag('result_form', 'tag')
+    });
 });
-// send new tag to server
-$(document).on("click", "#send_tag", function () {
-    event.preventDefault();
-    sendTag('result_form', 'tag')
-}); // animation to display settings
+ // animation to display settings
 $(document).on('click', ".manage-tag", function (e) {
     e.preventDefault();
     let id = $(this).data("menu");
@@ -19,7 +20,12 @@ $(document).on("click", ".menu-block .manage .edit", function (event) {
     event.preventDefault();
     let id = $(this).data("tag-update-id");
     getFormForUpdateTag(id);
-}); // confirm to delete tag
+    $(document).on("click", "#send_tag", function () {
+        event.preventDefault();
+        updateTag('result_form', 'tag')
+    });
+});
+// confirm to delete tag
 $(document).on("click", ".menu-block .manage .delete", function (event) {
     event.preventDefault();
     let id = $(this).data("tag-delete-id");
@@ -42,10 +48,6 @@ $(document).on("click", ".menu-block .manage .delete", function (event) {
             deleteTag(id);
         }
     });
-});
-$(document).on("click", "#send_tag", function () {
-    event.preventDefault();
-    updateTag('result_form', 'tag')
 });
 
 function sendTag(result_form, ajax_form) {
@@ -102,7 +104,6 @@ function updateTag(result_form, ajax_form) {
             $('#modalTagForm').on('hidden.bs.modal', function () {
                 $('#modal').html(data);
                 $('#centralModalSuccess').modal();
-                location.reload(true);
             });
         },
         error: function (response) {
