@@ -207,7 +207,7 @@ public class PostDaoRestClientImplTest {
     }
 
     @Test(expected = HttpClientErrorException.NotFound.class)
-    public void addPostWIthNotExistTag() throws JsonProcessingException {
+    public void addPostWithNotExistTag() throws JsonProcessingException {
         doThrow(HttpClientErrorException.NotFound.class).when(restTemplate).exchange(
                 anyString(),
                 any(HttpMethod.class),
