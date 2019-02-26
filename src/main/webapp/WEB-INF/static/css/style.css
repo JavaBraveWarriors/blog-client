@@ -163,3 +163,6 @@ html {
 .page-item.active .page-link {
     background-color: #1ab3e1 !important;
 }
+.form-inline{
+    flex-flow: row!important;
+}
