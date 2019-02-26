@@ -102,6 +102,7 @@ function updateTag(result_form, ajax_form) {
             $('#modalTagForm').on('hidden.bs.modal', function () {
                 $('#modal').html(data);
                 $('#centralModalSuccess').modal();
+                location.reload(true);
             });
         },
         error: function (response) {
