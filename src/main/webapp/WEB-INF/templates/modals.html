@@ -13,7 +13,6 @@
                     <i class="fa fa-check fa-4x mb-3 animated rotateIn" style="color: #00c759;"></i>
                     <p th:text="${message}"></p>
                     <a type="button" class="btn btn-success waves-effect waves-light" data-dismiss="modal">Ok</a>
-
                 </div>
             </div>
         </div>
@@ -67,7 +66,8 @@
         <div class="modal-content">
             <form class="needs-validation" th:object="${tag}" novalidate id="tag">
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" th:text="#{modal.addTag}"></h5>
+                    <h5 th:if="${page.get('title')} == 'update'" class="modal-title text-center" th:text="#{modal.updateTag}"></h5>
+                    <h5 th:if="${page.get('title')} == 'add'" class="modal-title text-center" th:text="#{modal.addTag}"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
