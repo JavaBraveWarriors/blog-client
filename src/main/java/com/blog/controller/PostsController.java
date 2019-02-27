@@ -65,8 +65,8 @@ public class PostsController extends BaseController{
     public String getPageForUpdatePost(
             Model model,
             @PathVariable(value = "postId") Long postId) {
-        List<Tag> tags = tagService.getAllTags();
         ResponsePostDto post = postDao.getPostById(postId);
+        List<Tag> tags = tagService.getAllTags();
         Map<String, String> currentPage = pageService.getPageDefaultParams();
         currentPage.put("title", "update");
         model.addAttribute("user", getActiveUser());
@@ -83,10 +83,6 @@ public class PostsController extends BaseController{
             @ModelAttribute RequestPostDto post) {
         postDao.updatePost(post);
         Map<String, String> currentPage = pageService.getPageDefaultParams();
-        // TODO: what for ih here?
-        model.addAttribute("user", getActiveUser());
-        model.addAttribute("post", post);
-        model.addAttribute("page", currentPage);
         return "redirect:/blog/posts/" + postId;
     }
     @GetMapping("/new")
