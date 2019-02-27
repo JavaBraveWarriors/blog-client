@@ -32,14 +32,13 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.jsonConverter = jsonConverter;
-        endpoint = "tags";
     }
 
     public Tag getTagById(Long id) {
         LOGGER.debug("Get tag by id = [{}].", id);
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<Tag> post = restTemplate.exchange(
-                createURLWithEndpoint(endpoint.concat(SLASH).concat(id.toString())),
+                createURLWithEndpoint(getEndpoint().concat(SLASH).concat(id.toString())),
                 HttpMethod.GET,
                 entity,
                 Tag.class
@@ -53,7 +52,7 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
         entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<List<Tag>> tags = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<List<Tag>>() {
@@ -68,7 +67,7 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
         entity = new HttpEntity<>(convertToJson(tag), headers);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.POST,
                 entity,
                 String.class
@@ -81,7 +80,7 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
         entity = new HttpEntity<>(convertToJson(tag), headers);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.PUT,
                 entity,
                 String.class
@@ -94,10 +93,14 @@ public class TagDaoRestClientImpl extends RestClientAbstract implements TagDao {
         entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                createURLWithEndpoint(endpoint.concat(SLASH).concat(tagId.toString())),
+                createURLWithEndpoint(getEndpoint().concat(SLASH).concat(tagId.toString())),
                 HttpMethod.DELETE,
                 entity,
                 String.class
         );
+    }
+
+    protected String getEndpoint() {
+        return "tags";
     }
 }

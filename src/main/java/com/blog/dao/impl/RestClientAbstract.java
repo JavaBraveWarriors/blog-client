@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Abstract client for rest-api.
  */
-public class RestClientAbstract {
+public abstract class RestClientAbstract {
 
     @Value("${rest.service.port}")
     protected String port;
@@ -20,8 +20,6 @@ public class RestClientAbstract {
 
     @Value("${rest.service.uri}")
     protected String serverURI;
-
-    protected String endpoint;
 
     protected ObjectMapper jsonConverter;
 
@@ -54,4 +52,6 @@ public class RestClientAbstract {
             throw new RuntimeException(e);
         }
     }
+
+    protected abstract String getEndpoint();
 }

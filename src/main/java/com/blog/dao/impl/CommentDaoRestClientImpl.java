@@ -32,7 +32,6 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.jsonConverter = jsonConverter;
-        endpoint = "comments";
     }
 
     public CommentListWrapper getListOfCommentsByPostId(Long page, Long size, Long postId) {
@@ -40,7 +39,7 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<CommentListWrapper> comments = restTemplate.exchange(
                 createURLWithEndpoint(
-                        endpoint
+                        getEndpoint()
                                 .concat("?size=")
                                 .concat(size.toString())
                                 .concat("&page=")
@@ -60,7 +59,7 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<Long> comments = restTemplate.exchange(
                 createURLWithEndpoint(
-                        endpoint.concat("/count")
+                        getEndpoint().concat("/count")
                                 .concat("?size=")
                                 .concat(size.toString())
                                 .concat("&postId=")
@@ -103,7 +102,7 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<Comment> commentResponseEntity = restTemplate.exchange(
                 createURLWithEndpoint(
-                        endpoint.concat(SLASH)
+                        getEndpoint().concat(SLASH)
                                 .concat(commentId.toString())),
                 HttpMethod.GET,
                 entity,
@@ -117,10 +116,14 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         LOGGER.debug("Update comment = [{}].", comment);
         entity = new HttpEntity<>(convertToJson(comment), headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.PUT,
                 entity,
                 String.class
         );
+    }
+
+    protected String getEndpoint() {
+        return "comments";
     }
 }

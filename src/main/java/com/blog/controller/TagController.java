@@ -6,7 +6,6 @@ import com.blog.model.Tag;
 import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +16,20 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/blog")
-public class TagController {
+public class TagController extends BaseController {
 
-    private MessageSource messageSource;
+    private static final String SUCCESS_UPDATE_TAG = "modal.success.updateTag";
+    private static final String SUCCESS_DELETE_TAG = "modal.success.deleteTag";
+    private static final String SUCCESS_ADD_TAG = "modal.success.addTag";
 
     private TagDao tagDao;
     private PageService pageService;
 
     @Autowired
     public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource) {
+        super(messageSource);
         this.tagDao = tagDao;
         this.pageService = pageService;
-        this.messageSource = messageSource;
     }
 
     @GetMapping("")
@@ -69,7 +70,7 @@ public class TagController {
         tagDao.updateTag(tag);
 
         model.addAttribute("message",
-                messageSource.getMessage("modal.success.updateTag", null, LocaleContextHolder.getLocale()));
+                getLocaleMessage(SUCCESS_UPDATE_TAG));
 
         return "modals::success";
     }
@@ -78,13 +79,15 @@ public class TagController {
     public String addTag(@Valid Tag tag, Model model) {
         tagDao.addTag(tag);
         model.addAttribute("message",
-                messageSource.getMessage("modal.success.addTag", null, LocaleContextHolder.getLocale()));
+                getLocaleMessage(SUCCESS_ADD_TAG));
         return "modals::success";
     }
 
     @DeleteMapping("/tags/{id}")
     public String deleteTag(Model model, @PathVariable(value = "id") Long tagId) {
         tagDao.deleteTag(tagId);
+        model.addAttribute("message",
+                getLocaleMessage(SUCCESS_DELETE_TAG));
         return "modals::success";
     }
 

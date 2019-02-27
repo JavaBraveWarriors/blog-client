@@ -31,7 +31,6 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.jsonConverter = jsonConverter;
-        endpoint = "posts";
     }
 
     public PostListWrapper getListShortPosts(Long page, Long size) {
@@ -40,7 +39,7 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<PostListWrapper> posts = restTemplate.exchange(
-                createURLWithEndpoint(endpoint.concat("?page=").concat(page.toString()).concat("&size=").concat(size.toString())),
+                createURLWithEndpoint(getEndpoint().concat("?page=").concat(page.toString()).concat("&size=").concat(size.toString())),
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<PostListWrapper>() {
@@ -55,7 +54,7 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<PostListWrapper> posts = restTemplate.exchange(
                 createURLWithEndpoint(
-                        endpoint
+                        getEndpoint()
                                 .concat("?page=")
                                 .concat(page.toString())
                                 .concat("&size=")
@@ -80,7 +79,7 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         LOGGER.debug("Add new post = [{}].", post);
         entity = new HttpEntity<>(convertToJson(post), headers);
         ResponseEntity<Long> postId = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.POST,
                 entity,
                 new ParameterizedTypeReference<Long>() {
@@ -93,7 +92,7 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         LOGGER.debug("Get post by post id = [{}].", id);
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<ResponsePostDto> post = restTemplate.exchange(
-                createURLWithEndpoint(endpoint.concat("/").concat(id.toString())),
+                createURLWithEndpoint(getEndpoint().concat("/").concat(id.toString())),
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<ResponsePostDto>() {
@@ -106,10 +105,14 @@ public class PostDaoRestClientImpl extends RestClientAbstract implements PostDao
         LOGGER.debug("Update post = [{}].", post);
         entity = new HttpEntity<>(convertToJson(post), headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                createURLWithEndpoint(endpoint),
+                createURLWithEndpoint(getEndpoint()),
                 HttpMethod.PUT,
                 entity,
                 String.class
         );
+    }
+
+    protected String getEndpoint() {
+        return "posts";
     }
 }

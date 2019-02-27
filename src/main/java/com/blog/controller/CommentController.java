@@ -8,7 +8,6 @@ import com.blog.model.Pagination;
 import com.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +16,18 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/comments")
-public class CommentController {
+public class CommentController extends BaseController {
 
-    private MessageSource messageSource;
+    private static final String SUCCESS_UPDATE_COMMENT = "modal.success.updateComment";
+    private static final String SUCCESS_ADD_COMMENT = "modal.success.addComment";
+    private static final String SUCCESS_DELETE_COMMENT = "modal.success.deleteComment";
 
     private CommentDao commentDao;
     private PageService pageService;
 
     @Autowired
     public CommentController(MessageSource messageSource, CommentDao commentDao, PageService pageService) {
-        this.messageSource = messageSource;
+        super(messageSource);
         this.commentDao = commentDao;
         this.pageService = pageService;
     }
@@ -64,8 +65,10 @@ public class CommentController {
     }
 
     @PostMapping("/post")
-    public String addComment(@Valid Comment comment) {
+    public String addComment(@Valid Comment comment, Model model) {
         commentDao.addComment(comment);
+
+        model.addAttribute("message", getLocaleMessage(SUCCESS_ADD_COMMENT));
 
         return "modals::success";
     }
@@ -77,7 +80,7 @@ public class CommentController {
             @PathVariable(value = "id") Long commentId) {
         commentDao.deleteComment(postId, commentId);
 
-        model.addAttribute("message", "Комментарий успешно добавлен.");
+        model.addAttribute("message", getLocaleMessage(SUCCESS_DELETE_COMMENT));
 
         return "modals::success";
     }
@@ -98,7 +101,7 @@ public class CommentController {
             Model model, @Valid Comment comment) {
         commentDao.updateComment(comment);
         // TODO: added this message to properties.
-        model.addAttribute("message", messageSource.getMessage("modal.success.updateComment", null, LocaleContextHolder.getLocale()));
+        model.addAttribute("message", getLocaleMessage(SUCCESS_UPDATE_COMMENT));
 
         return "modals::success";
     }
