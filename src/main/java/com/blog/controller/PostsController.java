@@ -1,4 +1,5 @@
 package com.blog.controller;
+
 import com.blog.dao.PostDao;
 import com.blog.dao.TagDao;
 import com.blog.model.*;
@@ -9,19 +10,22 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 @Controller
 @RequestMapping("/blog/posts")
-public class PostsController extends BaseController{
+public class PostsController extends BaseController {
     private static final String UPDATE_POST_TITLE = "formPost.updateTitle";
     private static final String ADD_POST_TITLE = "formPost.addTitle";
     private PostService postService;
     private PostDao postDao;
     private TagDao tagService;
     private PageService pageService;
+
     @Autowired
     public PostsController(PostService postService,
                            TagDao tagService,
@@ -33,6 +37,7 @@ public class PostsController extends BaseController{
         this.tagService = tagService;
         this.pageService = pageService;
     }
+
     @GetMapping("")
     public String getPageWithPosts(
             Model model,
@@ -52,6 +57,7 @@ public class PostsController extends BaseController{
         model.addAttribute("pagination", pagination);
         return "blogPosts";
     }
+
     @GetMapping("/{id}")
     public String getPagePost(@PathVariable(name = "id") Long id, Model model) {
         ResponsePostDto post = postDao.getPostById(id);
@@ -61,6 +67,7 @@ public class PostsController extends BaseController{
         model.addAttribute("page", currentPage);
         return "blogPost";
     }
+
     @GetMapping("/{postId}/update")
     public String getPageForUpdatePost(
             Model model,
@@ -76,6 +83,7 @@ public class PostsController extends BaseController{
         model.addAttribute("allTags", tags);
         return "formPost";
     }
+
     @PostMapping("/{postId}/update")
     public String updatePost(
             Model model,
@@ -85,6 +93,7 @@ public class PostsController extends BaseController{
         Map<String, String> currentPage = pageService.getPageDefaultParams();
         return "redirect:/blog/posts/" + postId;
     }
+
     @GetMapping("/new")
     public String getPageForAddPost(Model model) {
         List<Tag> tags = tagService.getAllTags();
@@ -99,11 +108,13 @@ public class PostsController extends BaseController{
         model.addAttribute("page", currentPage);
         return "formPost";
     }
+
     @PostMapping("/new")
     public String addPost(@ModelAttribute RequestPostDto post) {
         Long postId = postDao.addPost(post);
         return "redirect:/blog/posts/" + postId;
     }
+
     //TODO: refactor this when will be security. UserId must back from rest-api with every request.
     private ActiveUser getActiveUser() {
         ActiveUser user = new ActiveUser();

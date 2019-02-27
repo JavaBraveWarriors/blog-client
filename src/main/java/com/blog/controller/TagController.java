@@ -33,7 +33,7 @@ public class TagController extends BaseController {
     }
 
     @GetMapping("")
-    public String categories(Model model) {
+    public String getPageWithTags(Model model) {
         List<Tag> tags = tagDao.getAllTags();
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");
