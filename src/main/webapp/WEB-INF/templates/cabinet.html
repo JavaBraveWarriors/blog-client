@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{cabinet.title}"></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/cabinet.css" rel="stylesheet">
+</head>
+<body class="grey lighten-3">
+<!--Main Navigation-->
+<div class="header">
+    <header>
+        <div th:replace="~{header::header(${page.get(menuItem)})}"></div>
+        <div class="sidebar-fixed position-fixed ">
+            <a href="#" class="logo-wrapper waves-effect">
+                <img class="img-fluid" src="https://mdbootstrap.com/img/logo/mdb-email.png">
+            </a>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item waves-effect"
+                   th:classappend="${page.get('currentPage')} == '/statistics' ? active"
+                   href="/user/cabinet/statistics">
+                    <i class="fa fa-pie-chart mr-3"></i>
+                    <span th:text="#{cabinet.statistics}"></span>
+                </a>
+                <a class="list-group-item waves-effect"
+                   th:classappend="${page.get('currentPage')} == '/profile' ? active"
+                   href="/user/cabinet/profile">
+                    <i class="fa fa-user mr-3"></i>
+                    <span th:text="#{cabinet.profile}"></span>
+                </a>
+                <a class="list-group-item waves-effect"
+                   th:classappend="${page.get('currentPage')} == '/users' ? active"
+                   href="/user/cabinet/users">
+                    <i class="fa fa-table mr-3"></i>
+                    <span th:text="#{cabinet.users}"></span>
+                </a>
+                <a class="list-group-item waves-effect"
+                   th:classappend="${page.get('currentPage')} == '/blog' ? active"
+                   href="/user/cabinet/blog">
+                    <i class="fa fa-map mr-3"></i>
+                    <span th:text="#{cabinet.blog}"></span>
+                </a>
+                <a class="list-group-item waves-effect"
+                   th:classappend="${page.get('currentPage')} == '/likes' ? active"
+                   href="/user/cabinet/likes">
+                    <i class="fa fa-money mr-3"></i>
+                    <span th:text="#{cabinet.likes}"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+</div>
+<!--Main layout-->
+<main class="pt-5 mx-lg-5">
+    <!-- <div class="container-fluid mt-5">
+         <div th:replace="cabinetFragments::statistics()" th:if="${page.get('currentPage')} == '/cabinet/statistics'"></div>
+         <div th:replace="cabinetFragments::profile()" th:if="${page.get('currentPage')} == '/cabinet/profile'"></div>
+
+         }elseif(!empty($pageData['users'])){
+         /* тут сделтаь вывод карточек с людьми */
+         }elseif(!empty($pageData['myBlog'])){
+
+         }elseif(!empty($pageData['likes'])){
+         <div th:replace="" th:if="${page.get('currentPage')} == '/cabinet/likes'"></div>
+
+         &lt;!&ndash; Heading &ndash;&gt;
+     </div>-->
+
+</main>
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Are you sure?</p>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <i class="fa fa-times fa-4x animated rotateIn"></i>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <a href="" class="btn  btn-outline-danger">Yes</a>
+                <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<div th:replace="~{footerFragment::footer}"></div>
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="/static/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="/static/mdb.min.js"></script>
+<!-- Initializations -->
+<script>
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+    jQuery(function () {
+        jQuery('#sort').change(function () {
+            this.form.submit();
+        });
+    });
+    $('.delete').on('click', function () {
+        return confirm('Вы уверены, что хотите удалить?');
+    });
+
+
+</script>
+
+</body>
+
+</html>

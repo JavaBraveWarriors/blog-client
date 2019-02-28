@@ -113,3 +113,88 @@
         <!--/.Content-->
     </div>
 </div>
+
+<!-- Modal sing in -->
+<div th:fragment="modelSingIn" class="modal fade" id="loginIn" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" xmlns:th="http://www.thymeleaf.org">
+    <!--Modal: Contact form-->
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header primary-color white-text">
+                <h4 class="title">
+                    <i class="fa fa-pencil"></i> <span th:text="#{header.singIn}"></span></h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form class="text-center border border-light p-5" method="post">
+                    <!-- Material input email -->
+                    <div class="md-form form-sm">
+                        <i class="fa fa-envelope prefix"></i>
+                        <input type="email" name="email" id="defaultLoginFormEmail"
+                               class="form-control form-control-sm">
+                        <label for="defaultLoginFormEmail" th:text="#{singIn.email}"></label>
+                    </div>
+
+                    <!-- Material input password -->
+                    <div class="md-form form-sm">
+                        <i class="fa fa-tag prefix"></i>
+                        <input type="password" name="password" id="defaultLoginFormPassword"
+                               class="form-control form-control-sm">
+                        <label for="defaultLoginFormPassword" th:text="#{singIn.password}"></label>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <div>
+                            <!-- Remember me -->
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                                <label class="custom-control-label"
+                                       for="defaultLoginFormRemember"
+                                       th:text="#{singIn.rememberMe}"></label>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- Forgot password -->
+                            <p class="font-small blue-text d-flex justify-content-end">
+                                <span th:text="#{singIn.forgot}"></span>
+                                <a href="#" class="blue-text ml-1"><span th:text="#{singIn.password}"></span>?</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4 mb-2">
+                        <button class="btn btn-info btn-block my-4 btn-header-person" type="submit"
+                                th:text="#{header.singIn}"></button>
+                    </div>
+                    <!-- Sign in button -->
+
+                    <!-- Register -->
+                    <p><span th:text="#{singIn.notRegistration}"></span>
+                        <a href="/register">
+                            <span th:text="#{singIn.register}"></span>
+                        </a>
+                    </p>
+                    <!-- Social login -->
+                    <p th:text="#{singIn.singInForm}"></p>
+                    <a class="orange-text mx-2 hoverable sing-icon">
+                        <i class="fa fa-facebook  fa-2x"></i>
+                    </a>
+                    <a type="" class="orange-text mx-2 hoverable sing-icon">
+                        <i class="fa fa-twitter  fa-2x"></i>
+                    </a>
+                    <a type="" class="orange-text mx-2 hoverable sing-icon">
+                        <i class="fa fa-linkedin  fa-2x"></i>
+                    </a>
+                    <a type="" class="orange-text mx-2 hoverable sing-icon">
+                        <i class="fa fa-github  fa-2x"></i>
+                    </a>
+                </form>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+    <!--/Modal: Contact form-->
+</div>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta menuItem="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{categories.title}"></title> <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet"> <!-- Material Design Bootstrap -->
+    <link href="/static/mdb.min.css" rel="stylesheet"> <!-- Your custom styles (optional) -->
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/register.css" rel="stylesheet">
+
+</head>
+<body class="grey lighten-3">
+<div class="header" data-toggle="modal" data-target="#centralModalSuccess">
+    <header>
+        <div th:replace="~{header::header(${page.menuItem})}"></div>
+    </header>
+</div>
+<main class="max-lg-5">
+    <div class="container-fluid pt-5 mt-5 wrap">
+        <div class="row">
+            <div class="card col-xl-6 offset-xl-3 mt-5 mb-5">
+                <h5 class="card-header info-color white-text text-center py-4 mt-n4">
+                    <strong>Регистрация</strong>
+                </h5>
+                <div class="card-body px-lg-5 pt-0">
+                    <div th:replace="~{formFragments::register}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="modal"></div>
+<div th:replace="~{footerFragment::footer}"></div>
+<div th:replace="~{imports::js}"></div>
+</body>
+</html>

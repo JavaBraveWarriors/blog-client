@@ -154,9 +154,8 @@
     </div>
 </main>
 <div id="modal"></div>
-<div th:unless="${user.authorize} == true" th:replace="~{header::modelSingIn}"></div>
-<div th:replace="~{footerFragment::footer}"></div>
 
+<div th:replace="~{footerFragment::footer}"></div>
 <div th:replace="~{imports::js}"></div>
 <script>
     $(document).ready(function () {

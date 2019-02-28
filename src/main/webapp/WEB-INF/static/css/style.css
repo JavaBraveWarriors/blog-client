@@ -166,3 +166,7 @@ html {
 .form-inline{
     flex-flow: row!important;
 }
+
+.navbar {
+    background-color: #191517;
+}

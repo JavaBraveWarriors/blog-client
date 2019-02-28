@@ -34,7 +34,6 @@
 <main class=" max-lg-5 ">
     <div th:replace="~{postFragment::postsLayout(${posts}, ${pagination}, ${page})}"></div>
 </main>
-<div th:unless="${user.authorize} == true" th:replace="~{header::modelSingIn}"></div>
 
 <div th:replace="~{footerFragment::footer}"></div>
 <div id="modal"></div>
