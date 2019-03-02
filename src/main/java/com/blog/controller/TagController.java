@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.TagDao;
+import com.blog.messaging.Producer;
 import com.blog.model.ActiveUser;
 import com.blog.model.Tag;
 import com.blog.service.PageService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.JMSException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -24,16 +26,18 @@ public class TagController extends BaseController {
 
     private TagDao tagDao;
     private PageService pageService;
+    private Producer messageListener;
 
     @Autowired
-    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource) {
+    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource, Producer messageListener) {
         super(messageSource);
         this.tagDao = tagDao;
         this.pageService = pageService;
+        this.messageListener = messageListener;
     }
 
     @GetMapping("")
-    public String getPageWithTags(Model model) {
+    public String getPageWithTags(Model model) throws JMSException {
         List<Tag> tags = tagDao.getAllTags();
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");

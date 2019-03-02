@@ -30,6 +30,9 @@
         <jersey.version>2.27</jersey.version>
         <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
         <hamcrest-library.version>2.1</hamcrest-library.version>
+        <activemq.version>5.8.0</activemq.version>
+        <javax.jms.version>2.0</javax.jms.version>
+
     </properties>
 
     <dependencies>
@@ -94,6 +97,31 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>javax.jms-api</artifactId>
+            <version>${javax.jms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
         </dependency>
         <!--json converter-->
         <dependency>

@@ -14,14 +14,16 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 @EnableWebMvc
 @PropertySource({
-        "classpath:application.properties"
+        "classpath:application.properties",
+        "classpath:queue.properties"
 })
 @ComponentScan("com.blog")
 @Import({
         RestClientConfiguration.class,
         JacksonConfiguration.class,
         LocaleConfiguration.class,
-        ThymeleafConfiguration.class})
+        ThymeleafConfiguration.class,
+        MessagingConfiguration.class})
 public class MvcWebConfig implements WebMvcConfigurer {
 
     private LocaleChangeInterceptor localeChangeInterceptor;
