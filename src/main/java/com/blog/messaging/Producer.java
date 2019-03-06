@@ -1,11 +1,11 @@
 package com.blog.messaging;
 
+import com.blog.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.jms.Message;
 import javax.jms.Queue;
 
 @Component
@@ -22,11 +22,7 @@ public class Producer {
         this.queue = queue;
     }
 
-    public void sendMessage(final String text) {
-        jmsTemplate.send(queue, session -> {
-            Message message = session.createTextMessage(text);
-            message.setJMSReplyTo(queue);
-            return message;
-        });
+    public void sendMessage(final Tag tag) {
+        jmsTemplate.convertAndSend(queue, tag);
     }
 }

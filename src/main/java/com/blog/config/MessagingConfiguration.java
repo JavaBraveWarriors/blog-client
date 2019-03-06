@@ -2,6 +2,7 @@ package com.blog.config;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,11 +54,6 @@ public class MessagingConfiguration {
         return new ActiveMQQueue(TAG_QUEUE);
     }
 
-    @Bean(name = "jmsQueueTemplate")
-    public JmsTemplate createJmsQueueTemplate() {
-        return new JmsTemplate(cachingConnectionFactory());
-    }
-
     @Bean(name = "jmsTopicTemplate")
     public JmsTemplate createJmsTopicTemplate() {
         JmsTemplate template = new JmsTemplate(cachingConnectionFactory());
@@ -73,11 +69,11 @@ public class MessagingConfiguration {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+    @Autowired
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
+        factory.setConnectionFactory(connectionFactory);
         factory.setConcurrency("1-1");
-        factory.setPubSubDomain(true);
         return factory;
     }
 

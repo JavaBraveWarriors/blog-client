@@ -43,6 +43,5 @@ public class MvcWebConfig implements WebMvcConfigurer {
                 .addResourceLocations("/WEB-INF/static/js/").setCachePeriod(31556926);
         registry.addResourceHandler("/font/**")
                 .addResourceLocations("/WEB-INF/static/font/roboto").setCachePeriod(31556926);
-
     }
 }

@@ -26,14 +26,14 @@ public class TagController extends BaseController {
 
     private TagDao tagDao;
     private PageService pageService;
-    private Producer messageListener;
+    private Producer producer;
 
     @Autowired
-    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource, Producer messageListener) {
+    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource, Producer producer) {
         super(messageSource);
         this.tagDao = tagDao;
         this.pageService = pageService;
-        this.messageListener = messageListener;
+        this.producer = producer;
     }
 
     @GetMapping("")
@@ -41,7 +41,6 @@ public class TagController extends BaseController {
         List<Tag> tags = tagDao.getAllTags();
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");
-
         model.addAttribute("user", getActiveUser());
         model.addAttribute("tags", tags);
         model.addAttribute("page", page);
@@ -81,7 +80,8 @@ public class TagController extends BaseController {
 
     @PostMapping("/tags/add")
     public String addTag(@Valid Tag tag, Model model) {
-        tagDao.addTag(tag);
+        //tagDao.addTag(tag);
+        producer.sendMessage(tag);
         model.addAttribute("message",
                 getLocaleMessage(SUCCESS_ADD_TAG));
         return "modals::success";

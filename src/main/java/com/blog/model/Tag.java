@@ -5,10 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Tag {
+public class Tag implements Serializable {
+
+    static final long serialVersionUID = 42L;
 
     @Id
     @GeneratedValue
