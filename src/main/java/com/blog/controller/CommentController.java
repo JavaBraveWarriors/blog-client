@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.CommentDao;
+import com.blog.messaging.CommentJMSProducer;
 import com.blog.model.ActiveUser;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.JMSException;
 import javax.validation.Valid;
 
 @Controller
@@ -24,12 +26,18 @@ public class CommentController extends BaseController {
 
     private CommentDao commentDao;
     private PageService pageService;
+    private CommentJMSProducer commentJMSProducer;
 
     @Autowired
-    public CommentController(MessageSource messageSource, CommentDao commentDao, PageService pageService) {
+    public CommentController(
+            MessageSource messageSource,
+            CommentDao commentDao,
+            PageService pageService,
+            CommentJMSProducer commentJMSProducer) {
         super(messageSource);
         this.commentDao = commentDao;
         this.pageService = pageService;
+        this.commentJMSProducer = commentJMSProducer;
     }
 
     @GetMapping("/post/{postId}")
@@ -66,11 +74,15 @@ public class CommentController extends BaseController {
 
     @PostMapping("/post")
     public String addComment(@Valid Comment comment, Model model) {
-        commentDao.addComment(comment);
-
-        model.addAttribute("message", getLocaleMessage(SUCCESS_ADD_COMMENT));
-
-        return "modals::success";
+        //commentDao.addComment(comment);
+        try {
+            commentJMSProducer.receiveOrderStatus(commentJMSProducer.sendOrder(comment));
+            model.addAttribute("message", getLocaleMessage(SUCCESS_ADD_COMMENT));
+            return "modals::success";
+        } catch (JMSException e) {
+            model.addAttribute("message", getLocaleMessage(SUCCESS_ADD_COMMENT));
+            return "modals::error";
+        }
     }
 
     @DeleteMapping("/post/{postId}/{id}")

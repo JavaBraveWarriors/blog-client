@@ -6,9 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Comment {
+public class Comment implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

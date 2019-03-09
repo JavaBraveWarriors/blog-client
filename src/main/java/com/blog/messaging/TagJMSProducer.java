@@ -9,20 +9,19 @@ import org.springframework.stereotype.Component;
 import javax.jms.Queue;
 
 @Component
-public class Producer {
+public class TagJMSProducer {
 
     private JmsTemplate jmsTemplate;
 
-    @Qualifier(value = "tag")
     private Queue queue;
 
     @Autowired
-    public Producer(JmsTemplate jmsTemplate, Queue queue) {
+    public TagJMSProducer(JmsTemplate jmsTemplate, @Qualifier(value = "tag") Queue queue) {
         this.jmsTemplate = jmsTemplate;
         this.queue = queue;
     }
 
-    public void sendMessage(final Tag tag) {
+    public void sendTagMessage(final Tag tag) {
         jmsTemplate.convertAndSend(queue, tag);
     }
 }
