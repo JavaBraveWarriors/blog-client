@@ -42,7 +42,6 @@ public class CommentControllerTest {
     private static Long COMMENT_ID = 2L;
     private static String LOCALE_MESSAGE;
 
-
     private MockMvc mockMvc;
 
     @Mock
@@ -76,7 +75,6 @@ public class CommentControllerTest {
         PAGINATION.setSize(COMMENT_LIST_WRAPPER.getCountPages());
 
         LOCALE_MESSAGE = "localeMessage";
-
     }
 
     @Before

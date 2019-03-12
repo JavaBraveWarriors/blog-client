@@ -33,7 +33,7 @@ public class CommentJMSProducer {
         this.responseCommentQueue = responseCommentQueue;
     }
 
-    public String sendOrder(Comment comment) throws JMSException {
+    public String sendComment(Comment comment) throws JMSException {
         final AtomicReference<Message> message = new AtomicReference<>();
 
         jmsTemplate.convertAndSend(commentQueue, comment, messagePostProcessor -> {
@@ -44,11 +44,9 @@ public class CommentJMSProducer {
         return message.get().getJMSMessageID();
     }
 
-    public String receiveOrderStatus(String correlationId) {
-        String status = (String) jmsTemplate.receiveSelectedAndConvert(
+    public String receiveCommentStatus(String correlationId) {
+        return (String) jmsTemplate.receiveSelectedAndConvert(
                 responseCommentQueue,
                 "JMSCorrelationID = '" + correlationId + "'");
-        return status;
     }
-
 }

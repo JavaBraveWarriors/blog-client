@@ -1,15 +1,14 @@
 package com.blog.config;
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.pool.PooledConnectionFactory;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
@@ -60,7 +59,6 @@ public class MessagingConfiguration {
     }
 
     @Bean("responseComment")
-    @Lazy
     public Queue responseComment() {
         return new ActiveMQQueue(COMMENT_RESPONSE_QUEUE);
     }
@@ -71,20 +69,18 @@ public class MessagingConfiguration {
     }
 
     @Bean("tag")
-    @Lazy
     public Queue tagQueue() {
         return new ActiveMQQueue(TAG_QUEUE);
     }
 
     @Bean("comment")
-    @Lazy
     public Queue commentQueue() {
         return new ActiveMQQueue(COMMENT_QUEUE);
     }
 
     @Bean(name = "jmsTopicTemplate")
-    public JmsTemplate createJmsTopicTemplate() {
-        JmsTemplate template = new JmsTemplate(cachingConnectionFactory());
+    public JmsTemplate createJmsTopicTemplate(PooledConnectionFactory pooledConnectionFactory) {
+        JmsTemplate template = new JmsTemplate(pooledConnectionFactory);
         template.setConnectionFactory(connectionFactory());
         template.setPubSubDomain(true);
         template.setDefaultDestination(defaultQueue());
@@ -106,11 +102,12 @@ public class MessagingConfiguration {
     }
 
     @Bean
-    public ConnectionFactory cachingConnectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setTargetConnectionFactory(connectionFactory());
-        connectionFactory.setSessionCacheSize(10);
-        return connectionFactory;
+    public PooledConnectionFactory pooledConnectionFactory(ActiveMQConnectionFactory connectionFactory) {
+        PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory();
+        pooledConnectionFactory.setMaxConnections(5);
+        pooledConnectionFactory.setMaximumActiveSessionPerConnection(500);
+        pooledConnectionFactory.setConnectionFactory(connectionFactory);
+        return pooledConnectionFactory;
     }
 }
 

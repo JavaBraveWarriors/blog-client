@@ -76,7 +76,7 @@ public class CommentController extends BaseController {
     public String addComment(@Valid Comment comment, Model model) {
         //commentDao.addComment(comment);
         try {
-            commentJMSProducer.receiveOrderStatus(commentJMSProducer.sendOrder(comment));
+            commentJMSProducer.receiveCommentStatus(commentJMSProducer.sendComment(comment));
             model.addAttribute("message", getLocaleMessage(SUCCESS_ADD_COMMENT));
             return "modals::success";
         } catch (JMSException e) {

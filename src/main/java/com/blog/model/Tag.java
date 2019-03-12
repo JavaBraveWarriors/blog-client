@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 public class Tag implements Serializable {
 
-    static final long serialVersionUID = 42L;
+    private static final long serialVersionUID = 1113799434508676095L;
 
     @Id
     @GeneratedValue
