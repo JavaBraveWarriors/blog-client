@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.CommentDao;
+import com.blog.messaging.CommentJMSProducer;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 import com.blog.model.Pagination;
@@ -41,6 +42,7 @@ public class CommentControllerTest {
     private static Pagination PAGINATION;
     private static Long COMMENT_ID = 2L;
     private static String LOCALE_MESSAGE;
+    private static String JMS_CORRELATION_ID = "12335235432423";
 
     private MockMvc mockMvc;
 
@@ -49,6 +51,9 @@ public class CommentControllerTest {
 
     @Mock
     private PageService pageService;
+
+    @Mock
+    private CommentJMSProducer commentJMSProducer;
 
     @Mock
     private MessageSource messageSource;
@@ -115,6 +120,7 @@ public class CommentControllerTest {
     @Test
     public void addComment() throws Exception {
         given(messageSource.getMessage(anyString(), any(), any(Locale.class))).willReturn(LOCALE_MESSAGE);
+        given(commentJMSProducer.sendComment(any(Comment.class))).willReturn(JMS_CORRELATION_ID);
 
         mockMvc.perform(post("/comments/post")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -124,7 +130,9 @@ public class CommentControllerTest {
                 .andExpect(forwardedUrl("modals::success"));
 
         verify(messageSource, times(1)).getMessage(anyString(), any(), any(Locale.class));
-        verify(commentDao, times(1)).addComment(any(Comment.class));
+        verify(commentJMSProducer, times(1)).sendComment(any(Comment.class));
+        verify(commentJMSProducer, times(1)).receiveCommentStatus(JMS_CORRELATION_ID);
+
         verifyNoMoreInteractions(commentDao, messageSource);
     }
 
