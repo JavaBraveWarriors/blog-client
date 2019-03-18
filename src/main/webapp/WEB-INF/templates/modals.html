@@ -113,3 +113,21 @@
         <!--/.Content-->
     </div>
 </div>
+<div th:fragment="error" class="modal fade" xmlns:th="http://www.thymeleaf.org" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-frame modal-bottom modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <i class="fa fa-check fa-4x mb-3 animated rotateIn" style="color: #00c759;"></i>
+                    <p th:text="${message}"></p>
+                    <a type="button" class="btn btn-success waves-effect waves-light" data-dismiss="modal">Ok</a>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

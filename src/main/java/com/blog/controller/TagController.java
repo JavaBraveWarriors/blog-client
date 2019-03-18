@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.TagDao;
+import com.blog.messaging.TagJMSProducer;
 import com.blog.model.ActiveUser;
 import com.blog.model.Tag;
 import com.blog.service.PageService;
@@ -24,12 +25,14 @@ public class TagController extends BaseController {
 
     private TagDao tagDao;
     private PageService pageService;
+    private TagJMSProducer tagJMSProducer;
 
     @Autowired
-    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource) {
+    public TagController(PageService pageService, TagDao tagDao, MessageSource messageSource, TagJMSProducer TagJMSProducer) {
         super(messageSource);
         this.tagDao = tagDao;
         this.pageService = pageService;
+        this.tagJMSProducer = TagJMSProducer;
     }
 
     @GetMapping("")
@@ -37,7 +40,6 @@ public class TagController extends BaseController {
         List<Tag> tags = tagDao.getAllTags();
         Map<String, String> page = pageService.getPageDefaultParams();
         page.put("title", "Categories page");
-
         model.addAttribute("user", getActiveUser());
         model.addAttribute("tags", tags);
         model.addAttribute("page", page);
@@ -77,7 +79,8 @@ public class TagController extends BaseController {
 
     @PostMapping("/tags/add")
     public String addTag(@Valid Tag tag, Model model) {
-        tagDao.addTag(tag);
+        //tagDao.addTag(tag);
+        tagJMSProducer.sendTagMessage(tag);
         model.addAttribute("message",
                 getLocaleMessage(SUCCESS_ADD_TAG));
         return "modals::success";

@@ -2,10 +2,12 @@
 $(document).on("click", "#add_tag", function () {
     event.preventDefault();
     loadModal();
+    $(document).off("click", "#send_tag");
+
     // send new tag to server
     $(document).on("click", "#send_tag", function () {
         event.preventDefault();
-        sendTag('result_form', 'tag')
+        sendTag('result_form', 'tag');
     });
 });
  // animation to display settings

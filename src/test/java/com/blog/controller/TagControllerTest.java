@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.TagDao;
+import com.blog.messaging.TagJMSProducer;
 import com.blog.model.Tag;
 import com.blog.service.PageService;
 import org.junit.Before;
@@ -43,6 +44,9 @@ public class TagControllerTest {
 
     @Mock
     private TagDao tagDao;
+
+    @Mock
+    private TagJMSProducer tagJMSProducer;
 
     @Mock
     private PageService pageService;
@@ -148,7 +152,7 @@ public class TagControllerTest {
                 .andExpect(model().attribute("message", is(LOCALE_MESSAGE)));
 
         verify(messageSource, times(1)).getMessage(anyString(), any(), any(Locale.class));
-        verify(tagDao, times(1)).addTag(any(Tag.class));
+        verify(tagJMSProducer, times(1)).sendTagMessage(any(Tag.class));
         verifyNoMoreInteractions(tagDao, pageService);
     }
 
