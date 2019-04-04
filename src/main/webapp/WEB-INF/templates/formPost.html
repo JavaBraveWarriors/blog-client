@@ -7,18 +7,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title th:if="${page.get('title')} == 'add' " th:text="#{blogAddPost.title}"></title>
     <title th:if="${page.get('title')} == 'update' " th:text="#{blogUpdatePost.title}"></title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Bootstrap core CSS -->
-    <link href="/static/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
-    <!-- Material Design Bootstrap -->
-    <link href="/static/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
-    <link href="/static/style.css" rel="stylesheet">
-    <link href="/static/newPost.css" rel="stylesheet">
+    <div th:replace="~{imports::css}"></div>
+    <link href="/static/css/newPost.css" rel="stylesheet">
 </head>
 <body class="grey lighten-3">
 <div class="header">

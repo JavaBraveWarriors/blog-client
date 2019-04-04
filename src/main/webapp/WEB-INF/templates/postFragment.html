@@ -3,7 +3,7 @@
     <div class="view overlay">
         <!--TODO: add image support-->
         <img src="https://mdbootstrap.com/img/Photos/Fluent/img(9).jpg" class="card-img-top " alt="photo">
-        <a href="" th:href="'/posts/' + ${post.id}">
+        <a href="" th:href="@{posts/{id}(id=${post.id})}">
             <div class="mask rgba-white-slight"></div>
         </a>
     </div>
@@ -25,7 +25,7 @@
         <!--TODO: refactored that description will be in front of card-->
         <p th:text="${post.description}"></p>
         <div class="text-center ">
-            <a href="" th:href="'/blog/posts/' + ${post.id}" class="text-primary">
+            <a href="" th:href="@{posts/{id}(id=${post.id})}" class="text-primary">
                 <button class="btn btn-info btn-read" th:text="#{postFragment.readFull}"></button>
             </a>
         </div>
@@ -40,7 +40,7 @@
 <span th:fragment="postLikesCount(likesCount)" class="text-muted" xmlns:th="http://www.thymeleaf.org">
             <!-- TODO: add count Likes and checked user like post or not-->
     <!--user liked-->
-            <a href="/posts/removeLike/">
+            <a href="posts/removeLike/">
                 <i class="fa fa-heart fa-2x red-text"></i>
                 <!--[[${likesCount}]]-->
             </a>
@@ -65,7 +65,7 @@
 </a>
 <p th:fragment="postAuthor(post)" class="card-subtitle lead" xmlns:th="http://www.thymeleaf.org">
     <span th:text="#{postFragment.author}"></span>
-    <a href="" th:href="'/users/' + ${post.authorId}" class="h6"
+    <a href="" th:href="@{~/users/{id}(id=${post.authorId})}" class="h6"
        th:text="${post.authorName} + ' ' +${post.authorLastName}">
     </a>
 </p>

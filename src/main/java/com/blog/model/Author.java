@@ -30,11 +30,11 @@ public class Author {
     private String password;
 
     @NotNull
-    @Size(max = 45, message = "FirstName should be less than 255 characters.")
+    @Size(max = 255, message = "FirstName should be less than 255 characters.")
     private String firstName;
 
     @NotNull
-    @Size(max = 45, message = "LastName should be less than 255 characters.")
+    @Size(max = 255, message = "LastName should be less than 255 characters.")
     private String lastName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss±hh")
@@ -47,7 +47,14 @@ public class Author {
     public Author() {
     }
 
-    public Author(Long id, String mail, String login, String password, String firstName, String lastName, String description, String phone) {
+    public Author(Long id,
+                  String mail,
+                  String login,
+                  String password,
+                  String firstName,
+                  String lastName,
+                  String description,
+                  String phone) {
         this.id = id;
         this.mail = mail;
         this.login = login;

@@ -59,7 +59,7 @@ public class CommentDaoRestClientImpl extends RestClientAbstract implements Comm
         entity = new HttpEntity<>(null, headers);
         ResponseEntity<Long> comments = restTemplate.exchange(
                 createURLWithEndpoint(
-                        getEndpoint().concat("/count")
+                        getEndpoint().concat("/countPages")
                                 .concat("?size=")
                                 .concat(size.toString())
                                 .concat("&postId=")

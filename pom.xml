@@ -19,7 +19,7 @@
         <servlet-api.version>3.1.0</servlet-api.version>
         <jackson-databind.version>2.9.8</jackson-databind.version>
         <mockito-all.version>2.0.2-beta</mockito-all.version>
-        <jetty-maven-plugin.version>9.4.10.v20180503</jetty-maven-plugin.version>
+        <jetty-maven-plugin.version>9.4.14.v20181114</jetty-maven-plugin.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <checkstyle-plugin.version>3.0.0</checkstyle-plugin.version>
@@ -32,7 +32,13 @@
         <hamcrest-library.version>2.1</hamcrest-library.version>
         <activemq.version>5.8.0</activemq.version>
         <javax.jms.version>2.0</javax.jms.version>
-
+        <tomcat-maven-plugin.version>2.2</tomcat-maven-plugin.version>
+        <server.deploy.port>8883</server.deploy.port>
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <activemq-core.version>5.7.0</activemq-core.version>
+        <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
+        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
     </properties>
 
     <dependencies>
@@ -116,7 +122,7 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
-            <version>5.7.0</version>
+            <version>${activemq-core.version}</version>
         </dependency>
         <!--json converter-->
         <dependency>
@@ -181,17 +187,17 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
-            <version>3.0.11.RELEASE</version>
+            <version>${thymeleaf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
-            <version>3.0.1.RELEASE</version>
+            <version>${thymeleaf-extras-java8time.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
-            <version>3.0.11.RELEASE</version>
+            <version>${thymeleaf.version}</version>
         </dependency>
     </dependencies>
 
@@ -214,7 +220,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${maven-checkstyle-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>validate</id>
@@ -235,9 +241,9 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>${tomcat-maven-plugin.version}</version>
                 <configuration>
-                    <url>http://localhost:8888/manager/text</url>
+                    <url>http://localhost:${server.deploy.port}/manager/text</url>
                     <server>apache-tomcat</server>
                     <path>/${project.build.finalName}</path>
                     <update>true</update>
@@ -246,17 +252,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>${maven-war-plugin.version}</version>
                 <configuration>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <warName>client-blog-rest</warName>
+                    <warName>${project.build.finalName}</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.14.v20181114</version>
+                <version>${jetty-maven-plugin.version}</version>
                 <configuration>
                     <webApp>
                         <contextPath>/</contextPath>
