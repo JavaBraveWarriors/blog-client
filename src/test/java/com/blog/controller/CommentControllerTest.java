@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dao.CommentDao;
+import com.blog.messaging.CommentJMSProducer;
 import com.blog.model.Comment;
 import com.blog.model.CommentListWrapper;
 import com.blog.model.Pagination;
@@ -32,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommentControllerTest {
-
     private static CommentListWrapper COMMENT_LIST_WRAPPER;
     private static List<Comment> COMMENTS;
     private static Comment COMMENT;
@@ -41,6 +41,8 @@ public class CommentControllerTest {
     private static Long COUNT_PAGES = 1L;
     private static Pagination PAGINATION;
     private static Long COMMENT_ID = 2L;
+    private static String LOCALE_MESSAGE;
+    private static String JMS_CORRELATION_ID = "12335235432423";
 
     private MockMvc mockMvc;
 
@@ -49,6 +51,9 @@ public class CommentControllerTest {
 
     @Mock
     private PageService pageService;
+
+    @Mock
+    private CommentJMSProducer commentJMSProducer;
 
     @Mock
     private MessageSource messageSource;
@@ -63,6 +68,7 @@ public class CommentControllerTest {
         COMMENTS = new ArrayList<>();
         COMMENTS.add(COMMENT);
         COMMENTS.add(new Comment("testComment", AUTHOR_ID, POST_ID));
+
         COMMENT_LIST_WRAPPER = new CommentListWrapper();
         COMMENT_LIST_WRAPPER.setCommentsPage(COMMENTS);
         COMMENT_LIST_WRAPPER.setCountPages(COUNT_PAGES);
@@ -71,7 +77,9 @@ public class CommentControllerTest {
         PAGINATION = new Pagination();
         PAGINATION.setCurrentPage(1L);
         PAGINATION.setTotalPages(COUNT_PAGES);
-        PAGINATION.setSize(COMMENT_LIST_WRAPPER.getCountCommentsInPost());
+        PAGINATION.setSize(COMMENT_LIST_WRAPPER.getCountPages());
+
+        LOCALE_MESSAGE = "localeMessage";
     }
 
     @Before
@@ -111,6 +119,9 @@ public class CommentControllerTest {
 
     @Test
     public void addComment() throws Exception {
+        given(messageSource.getMessage(anyString(), any(), any(Locale.class))).willReturn(LOCALE_MESSAGE);
+        given(commentJMSProducer.sendComment(any(Comment.class))).willReturn(JMS_CORRELATION_ID);
+
         mockMvc.perform(post("/comments/post")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(COMMENT)))
@@ -118,19 +129,25 @@ public class CommentControllerTest {
                 .andExpect(view().name("modals::success"))
                 .andExpect(forwardedUrl("modals::success"));
 
-        verify(commentDao, times(1)).addComment(any(Comment.class));
-        verifyNoMoreInteractions(commentDao);
+        verify(messageSource, times(1)).getMessage(anyString(), any(), any(Locale.class));
+        verify(commentJMSProducer, times(1)).sendComment(any(Comment.class));
+        verify(commentJMSProducer, times(1)).receiveCommentStatus(JMS_CORRELATION_ID);
+
+        verifyNoMoreInteractions(commentDao, messageSource);
     }
 
     @Test
     public void deleteComment() throws Exception {
+        given(messageSource.getMessage(anyString(), any(), any(Locale.class))).willReturn(LOCALE_MESSAGE);
+
         mockMvc.perform(delete("/comments/post/{postId}/{id}", POST_ID, COMMENT_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("modals::success"))
                 .andExpect(forwardedUrl("modals::success"));
 
+        verify(messageSource, times(1)).getMessage(anyString(), any(), any(Locale.class));
         verify(commentDao, times(1)).deleteComment(anyLong(), anyLong());
-        verifyNoMoreInteractions(commentDao);
+        verifyNoMoreInteractions(messageSource, commentDao);
     }
 
     @Test
@@ -150,6 +167,7 @@ public class CommentControllerTest {
     @Test
     public void updateComment() throws Exception {
         given(messageSource.getMessage(anyString(), any(), any(Locale.class))).willReturn("message");
+
         mockMvc.perform(put("/comments/post")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(COMMENT)))
@@ -157,6 +175,7 @@ public class CommentControllerTest {
                 .andExpect(view().name("modals::success"))
                 .andExpect(forwardedUrl("modals::success"));
 
+        verify(messageSource, times(1)).getMessage(anyString(), any(), any(Locale.class));
         verify(commentDao, times(1)).updateComment(any(Comment.class));
         verifyNoMoreInteractions(commentDao);
     }

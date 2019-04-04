@@ -3,12 +3,12 @@
     <div class="card-header font-weight-bold">[[${countComments}]] <span th:text="#{comments.comments}"></span></div>
     <div class="card-body container-fluid">
         <div th:each="comment : ${comments}" class="media d-block d-md-flex mt-4 col-xl-12">
-            <a th:href="'/users/' + ${comment.authorId}">
+            <a th:href="@{/users/{comment.authorId}(comment.authorId=${comment.authorId})}">
                 <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
                      th:alt="#{comment.image}">
             </a>
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <a th:href="'/users/' + ${comment.authorId}">
+                <a th:href="@{/users/{comment.authorId}(comment.authorId=${comment.authorId})}">
                     <h5 class="mt-0 mb-0 font-weight-bold">
                         <span th:text="${comment.authorFirstName} + | | + ${comment.authorLastName}"></span>
                     </h5>

@@ -6,16 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title th:text="${post.title}"></title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Bootstrap core CSS -->
-    <link href="/static/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link href="/static/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
-
-    <link href="/static/style.css" rel="stylesheet">
-    <link href="/static/post.css" rel="stylesheet">
+    <div th:replace="~{imports::css}"></div>
+    <link href="/static/css/post.css" rel="stylesheet">
 </head>
 
 <body class="grey  lighten-3">
@@ -34,7 +26,7 @@
                         <h1 class="mb-4 white-text mt-5">
                             <strong th:text="${post.title}"></strong>
                         </h1>
-                        <a target="_blank" th:href="'/users/' + ${post.authorId}"
+                        <a target="_blank" th:href="@{/users/{post.authorId}(post.authorId=${{post.authorId}})}"
                            class="btn btn-outline-white btn-lg mt-5 waves-effect waves-light">
                             <span th:text="#{blogPost.allPostOfAuthor}"></span>
                             <!-- <i class="fa fa-graduation-cap ml-2"></i> -->
@@ -81,7 +73,7 @@
                         </div>
                         <div class="card-body">
                             <div class="media d-block d-md-flex mt-3">
-                                <a th:href="'/users/' + ${post.authorId}">
+                                <a th:href="@{/users/{post.authorId}(post.authorId=${{post.authorId}})}">
                                     <img class="d-flex mb-3 mx-auto z-depth-1"
                                          src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
                                          alt="Generic placeholder image"
